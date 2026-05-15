@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
+
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+
+    <!-- EF 8 COMPATÍVEL COM POMELO 8 -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+
+    <PackageReference Include="Microsoft.OpenApi" Version="2.4.1" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\\" />
+    <Folder Include="Data\\" />
+    <Folder Include="DTOs\\" />
+    <Folder Include="Services\\" />
+    <Folder Include="Repositories\\" />
+  </ItemGroup>
+
+</Project>

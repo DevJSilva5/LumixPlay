@@ -1,0 +1,50 @@
+﻿@model List<Lumix.Models.Conteudo>
+
+@{
+    ViewData["Title"] = "Lumix";
+}
+
+<div class="banner">
+    <div class="overlay">
+        <div class="banner-content">
+            <h1>LUMIX</h1>
+
+            <p>
+                Filmes, séries, desenhos e novelas em um só lugar.
+            </p>
+
+            <button class="btn-play">
+                ▶ Assistir
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container-home">
+
+    <h2 class="categoria">
+        Populares
+    </h2>
+
+    <div class="cards">
+
+        @foreach (var item in Model)
+        {
+            <div class="card-filme">
+
+                <img src="@item.Thumbnail" alt="@item.Titulo">
+
+                <div class="info">
+
+                    <h3>@item.Titulo</h3>
+
+                    <span>@item.Categoria</span>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

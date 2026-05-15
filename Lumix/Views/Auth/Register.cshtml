@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro Lumix</title>
+
+    <link rel="stylesheet" href="~/css/login.css">
+
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+
+        <div class="login-box">
+
+            <h1>LUMIX</h1>
+
+            <p class="subtitle">
+                Criar conta
+            </p>
+
+            <form method="post">
+
+                <div class="input-group">
+                    <input type="text" name="Nome" placeholder="Nome">
+                </div>
+
+                <div class="input-group">
+                    <input type="email" name="Email" placeholder="Email">
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="Senha" placeholder="Senha">
+                </div>
+
+                <button class="btn-login">
+                    Cadastrar
+                </button>
+
+            </form>
+
+            <div class="register">
+
+                Já possui conta?
+
+                <a href="/Auth/Login">
+                    Entrar
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
