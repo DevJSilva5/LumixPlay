@@ -14,10 +14,27 @@ public class AuthController : Controller
         _context = context;
     }
 
+    /* LOGIN */
+
     public IActionResult Login()
     {
+        var usuario =
+            HttpContext.Session.GetString("Usuario");
+
+        /* SE ESTIVER LOGADO */
+
+        if (!string.IsNullOrEmpty(usuario))
+        {
+            return RedirectToAction(
+                "Index",
+                "Home"
+            );
+        }
+
         return View();
     }
+
+    /* REGISTER */
 
     public IActionResult Register()
     {
@@ -30,10 +47,14 @@ public class AuthController : Controller
         if (_context.Usuarios.Any(u => u.Email == usuario.Email))
         {
             ViewBag.Erro = "Email já cadastrado";
+
             return View();
         }
 
-        usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
+        usuario.Senha =
+            BCrypt.Net.BCrypt.HashPassword(
+                usuario.Senha
+            );
 
         _context.Usuarios.Add(usuario);
 
@@ -42,34 +63,92 @@ public class AuthController : Controller
         return RedirectToAction("Login");
     }
 
+    /* LOGIN POST */
+
     [HttpPost]
-    public IActionResult Login(string email, string senha)
+    public IActionResult Login(
+        string email,
+        string senha,
+        bool continuarLogado
+    )
     {
-        var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
+        var usuario = _context.Usuarios
+            .FirstOrDefault(u => u.Email == email);
 
         if (usuario == null)
         {
             ViewBag.Erro = "Usuário não encontrado";
+
             return View();
         }
 
-        bool senhaCorreta = BCrypt.Net.BCrypt.Verify(senha, usuario.Senha);
+        bool senhaCorreta =
+            BCrypt.Net.BCrypt.Verify(
+                senha,
+                usuario.Senha
+            );
 
         if (!senhaCorreta)
         {
             ViewBag.Erro = "Senha incorreta";
+
             return View();
         }
 
-        HttpContext.Session.SetString("Usuario", usuario.Nome);
+        /* SESSION */
 
-        return RedirectToAction("Index", "Home");
+        HttpContext.Session.SetString(
+            "Usuario",
+            usuario.Nome
+        );
+
+        HttpContext.Session.SetString(
+            "Email",
+            usuario.Email
+        );
+
+        /* FOTO */
+
+        if (!string.IsNullOrEmpty(usuario.FotoPerfil))
+        {
+            HttpContext.Session.SetString(
+                "FotoPerfil",
+                usuario.FotoPerfil
+            );
+        }
+        else
+        {
+            HttpContext.Session.SetString(
+                "FotoPerfil",
+                "/images/perfil-default.png"
+            );
+        }
+
+        /* CONTINUAR LOGADO */
+
+        if (continuarLogado)
+        {
+            HttpContext.Session.SetString(
+                "ContinuarLogado",
+                "true"
+            );
+        }
+
+        return RedirectToAction(
+            "Index",
+            "Home"
+        );
     }
+
+    /* LOGOUT */
 
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
 
-        return RedirectToAction("Login");
+        return RedirectToAction(
+            "Login",
+            "Auth"
+        );
     }
 }

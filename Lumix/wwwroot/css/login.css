@@ -12,6 +12,13 @@ body {
     background: #05010a;
 }
 
+.login-logo {
+    width: 320px;
+    margin: 0 auto 1px auto;
+    display: block;
+    object-fit: contain;
+}
+
 .background {
     position: absolute;
     width: 100%;
@@ -106,3 +113,4 @@ body {
         color: #c77dff;
         text-decoration: none;
     }
+

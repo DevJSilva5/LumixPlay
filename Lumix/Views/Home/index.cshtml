@@ -1,50 +1,545 @@
-﻿@model List<Lumix.Models.Conteudo>
+﻿@using System.Text.Json
 
 @{
+    Layout = null;
     ViewData["Title"] = "Lumix";
+
+    var populares = ((JsonDocument)ViewBag.Populares)
+        .RootElement
+        .GetProperty("results");
+
+    var acao = ((JsonDocument)ViewBag.Acao)
+        .RootElement
+        .GetProperty("results");
+
+    var romance = ((JsonDocument)ViewBag.Romance)
+        .RootElement
+        .GetProperty("results");
+
+    var comedia = ((JsonDocument)ViewBag.Comedia)
+        .RootElement
+        .GetProperty("results");
+
+    var usuario = Context.Session.GetString("Usuario") ?? "Usuário";
+
+    var fotoPerfil = Context.Session.GetString("FotoPerfil");
+
+    if (string.IsNullOrEmpty(fotoPerfil))
+    {
+        fotoPerfil = "/images/perfil-default.png";
+    }
 }
 
-<div class="banner">
-    <div class="overlay">
-        <div class="banner-content">
-            <h1>LUMIX</h1>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-            <p>
-                Filmes, séries, desenhos e novelas em um só lugar.
-            </p>
+<head>
 
-            <button class="btn-play">
-                ▶ Assistir
-            </button>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lumix</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    ```css
+    <style>
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+
+            body {
+                background: #090909;
+                color: white;
+                font-family: 'Poppins',sans-serif;
+                overflow-x: hidden;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            /* NAVBAR */
+
+            .navbar {
+                width: 100%;
+                height: 75px;
+                background: rgba(10,10,10,0.95);
+                backdrop-filter: blur(8px);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 50px;
+                border-bottom: 2px solid #7b2cbf;
+                position: fixed;
+                top: 0;
+                z-index: 999999;
+            }
+
+            .logo img {
+                width: 300px;
+                margin-top: 10px;
+                object-fit: contain;
+            }
+
+            /* PERFIL */
+
+            .profile-area {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: white;
+                background: rgba(255,255,255,0.05);
+                padding: 8px 14px;
+                border-radius: 12px;
+                transition: 0.3s;
+            }
+
+                .profile-area:hover {
+                    background: rgba(255,255,255,0.1);
+                }
+
+            .profile-pic {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #c77dff;
+                background: #1a1a1a;
+            }
+
+            .profile-name {
+                font-size: 15px;
+                font-weight: 500;
+            }
+
+            /* HERO */
+
+            .hero {
+                height: 88vh;
+                background: linear-gradient( to right, rgba(0,0,0,0.95), rgba(0,0,0,0.55) ), url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-left: 70px;
+                padding-top: 80px;
+            }
+
+                .hero h1 {
+                    font-size: 78px;
+                    font-weight: 700;
+                    margin-bottom: 20px;
+                    color: white;
+                }
+
+                .hero p {
+                    width: 600px;
+                    color: #dddddd;
+                    line-height: 1.8;
+                    font-size: 18px;
+                    margin-bottom: 30px;
+                }
+
+            .btn {
+                width: 230px;
+                padding: 16px;
+                border: none;
+                border-radius: 12px;
+                background: #7b2cbf;
+                color: white;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+                .btn:hover {
+                    background: #9d4edd;
+                    transform: scale(1.05);
+                }
+
+            /* SEÇÕES */
+
+            .section {
+                padding: 40px 50px;
+                position: relative;
+                /* MUITO IMPORTANTE */
+                overflow: visible;
+                z-index: 1;
+            }
+
+            .section-title {
+                font-size: 30px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #c77dff;
+            }
+
+            /* SLIDER */
+
+            .slider-container {
+                position: relative;
+                /* NÃO CORTA O HOVER */
+                overflow: visible;
+            }
+
+            .movies-row {
+                display: flex;
+                gap: 20px;
+                /* REMOVE O SCROLL DAS CATEGORIAS */
+                overflow: hidden;
+                /* REMOVE BARRAS */
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                /* ESPAÇO PRO HOVER */
+                padding: 35px 25px;
+                position: relative;
+            }
+
+                .movies-row::-webkit-scrollbar {
+                    display: none;
+                }
+
+            /* CARDS */
+
+            .card {
+                min-width: 220px;
+                flex-shrink: 0;
+                position: relative;
+                transition: 0.35s;
+                cursor: pointer;
+                z-index: 1;
+            }
+
+                .card:hover {
+                    transform: scale(1.05);         
+                    z-index: 999999;
+                }
+
+                .card img {
+                    width: 220px;
+                    height: 330px;
+                    object-fit: cover;
+                    border-radius: 14px;
+                    border: 2px solid transparent;
+                    transition: 0.35s;
+                    display: block;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                }
+
+                .card:hover img {
+                    border-color: #9d4edd;
+                    box-shadow: 0 25px 60px rgba(0,0,0,0.95);
+                    
+                }
+
+            .card-title {
+                margin-top: 12px;
+                font-size: 16px;
+                font-weight: 500;
+                width: 220px;    
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.4;
+                min-height: 45px;
+            }
+
+            /* SETAS */
+
+            .arrow {
+                position: absolute;
+                top: 45%;
+                transform: translateY(-50%);
+                width: 55px;
+                height: 55px;
+                border: none;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.85);
+                color: white;
+                font-size: 30px;
+                cursor: pointer;
+                z-index: 999999999;
+                transition: 0.3s;
+            }
+
+                .arrow:hover {
+                    background: #7b2cbf;
+                }
+
+            .left {
+                left: -5px;
+            }
+
+            .right {
+                right: -5px;
+            }
+
+    </style>
+    ```
+
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">
+            <img src="/images/logo.png" alt="Lumix Logo">
         </div>
+
+        <a href="/Profile/Index"
+               class="profile-area">
+
+            <img src="@fotoPerfil"
+                 class="profile-pic">
+
+            <div class="profile-name">
+                @usuario
+            </div>
+
+        </a>
+
     </div>
-</div>
 
-<div class="container-home">
+    <!-- HERO -->
 
-    <h2 class="categoria">
-        Populares
-    </h2>
+    <div class="hero">
 
-    <div class="cards">
+        <h1>
+            LUMIX PLAY
+        </h1>
 
-        @foreach (var item in Model)
-        {
-            <div class="card-filme">
+        <p>
+            Filmes, séries, novelas e desenhos em uma experiência moderna
+            de streaming inspirada nas maiores plataformas do mundo.
+        </p>
 
-                <img src="@item.Thumbnail" alt="@item.Titulo">
+        <button class="btn">
+            ▶ Assistir Agora
+        </button>
 
-                <div class="info">
+    </div>
 
-                    <h3>@item.Titulo</h3>
+    <!-- POPULARES -->
 
-                    <span>@item.Categoria</span>
+    <div class="section">
 
-                </div>
+        <div class="section-title">
+            Populares
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('popular')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="popular">
+
+                @foreach (var filme in populares.EnumerateArray().Take(12))
+                {
+                    var titulo = filme.GetProperty("title").GetString();
+                    var poster = filme.GetProperty("poster_path").GetString();
+
+                    <div class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </div>
+                }
 
             </div>
-        }
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('popular')">
+                ❯
+            </button>
+
+        </div>
 
     </div>
 
-</div>
+    <!-- AÇÃO -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Ação
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('acao')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="acao">
+
+                @foreach (var filme in acao.EnumerateArray().Take(12))
+                {
+                    var titulo = filme.GetProperty("title").GetString();
+                    var poster = filme.GetProperty("poster_path").GetString();
+
+                    <div class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('acao')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ROMANCE -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Romance
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('romance')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="romance">
+
+                @foreach (var filme in romance.EnumerateArray().Take(12))
+                {
+                    var titulo = filme.GetProperty("title").GetString();
+                    var poster = filme.GetProperty("poster_path").GetString();
+
+                    <div class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('romance')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- COMÉDIA -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Comédia
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('comedia')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="comedia">
+
+                @foreach (var filme in comedia.EnumerateArray().Take(12))
+                {
+                    var titulo = filme.GetProperty("title").GetString();
+                    var poster = filme.GetProperty("poster_path").GetString();
+
+                    <div class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('comedia')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+
+            function scrollLeftRow(id) {
+
+                const row = document.getElementById(id);
+
+                row.scrollBy({
+                    left: -1000,
+                    behavior: 'smooth'
+                });
+            }
+
+            function scrollRightRow(id) {
+
+                const row = document.getElementById(id);
+
+                row.scrollBy({
+                    left: 1000,
+                    behavior: 'smooth'
+                });
+            }
+
+    </script>
+
+</body>
+
+</html>
