@@ -1,5 +1,7 @@
 ﻿using Lumix.Services;
 using Microsoft.AspNetCore.Mvc;
+using Lumix.Data;
+using Lumix.Models;
 
 namespace Lumix.Controllers;
 
@@ -7,25 +9,81 @@ public class HomeController : Controller
 {
     private readonly TmdbService _tmdb;
 
-    public HomeController(TmdbService tmdb)
+    private readonly AppDbContext _context;
+
+    public HomeController(
+        TmdbService tmdb,
+        AppDbContext context
+    )
     {
         _tmdb = tmdb;
+        _context = context;
     }
 
     public async Task<IActionResult> Index()
     {
-        var populares = await _tmdb.GetPopular();
+        /* PROTEÇÃO LOGIN */
 
-        var acao = await _tmdb.GetByGenre(28);
+        var email =
+            HttpContext.Session.GetString("Email");
 
-        var romance = await _tmdb.GetByGenre(10749);
+        if (string.IsNullOrEmpty(email))
+        {
+            return RedirectToAction(
+                "Login",
+                "Auth"
+            );
+        }
 
-        var comedia = await _tmdb.GetByGenre(35);
+        /* FILMES API */
+
+        var populares =
+            await _tmdb.GetPopular();
+
+        var acao =
+            await _tmdb.GetByGenre(28);
+
+        var romance =
+            await _tmdb.GetByGenre(10749);
+
+        var comedia =
+            await _tmdb.GetByGenre(35);
+
+        /* FAVORITOS */
+
+        var usuario =
+            _context.Usuarios
+            .FirstOrDefault(x =>
+                x.Email == email
+            );
+
+        List<Favorito> favoritos =
+            new List<Favorito>();
+
+        if (usuario != null)
+        {
+            favoritos =
+                _context.Favoritos
+                .Where(f =>
+                    f.UsuarioId == usuario.Id
+                )
+                .OrderByDescending(f =>
+                    f.DataFavoritado
+                )
+                .ToList();
+        }
+
+        /* VIEWBAG */
 
         ViewBag.Populares = populares;
+
         ViewBag.Acao = acao;
+
         ViewBag.Romance = romance;
+
         ViewBag.Comedia = comedia;
+
+        ViewBag.Favoritos = favoritos;
 
         return View();
     }

@@ -9,11 +9,16 @@
 
     <meta charset="utf-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
-    <title>Lumix Login</title>
+    <title>Lumix • Entrar</title>
 
-    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet"
+          href="~/css/login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
 </head>
 
@@ -21,44 +26,156 @@
 
     <div class="background"></div>
 
-    <div class="login-container">
+    <div class="background-overlay"></div>
 
-        <div class="login-box">
+    <div class="page">
 
-            <img src="/images/logo.png" class="login-logo">
+        <!-- LADO ESQUERDO -->
 
-            <p class="subtitle">
-                Entre para continuar assistindo
-            </p>
+        <div class="welcome-side">
+
+            <img src="/images/logo.png"
+                 class="hero-logo">
+
+            <div class="welcome-content">
+
+                <span class="tag">
+                    STREAMING PREMIUM
+                </span>
+
+                <h1>
+                    Viva o cinema em casa!
+                </h1>
+
+                <p>
+                    Descubra os maiores lançamentos do mundo
+                    do entretenimento em uma interface moderna,
+                    rápida e imersiva inspirada nas principais
+                    plataformas de streaming.
+                </p>
+
+                <div class="features">
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Favoritos sincronizados
+                    </div>
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Trailer automático em tela cheia
+                    </div>
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Catálogo atualizado diariamente
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- LOGIN -->
+
+        <div class="login-side">
+
+            <div class="login-box">
+
+                <div class="login-header">
+
+                    <h2>
+                        Bem-vindo de volta
+                    </h2>
+
+                    <p>
+                        Entre na sua conta para continuar assistindo
+                    </p>
+
+                </div>
+
                 <form method="post">
 
                     <div class="input-group">
 
-                        <input type="email" name="email" placeholder="Email">
+                        <label>
+                            Email
+                        </label>
+
+                        <input type="email"
+                               name="email"
+                               placeholder="Digite seu email"
+                               required>
 
                     </div>
 
                     <div class="input-group">
 
-                        <input type="password" name="senha" placeholder="Senha">
+                        <label>
+                            Senha
+                        </label>
+
+                        <input type="password"
+                               name="senha"
+                               placeholder="Digite sua senha"
+                               required>
+
+                    </div>
+
+                    <div class="login-options">
+
+                        <label class="remember">
+
+                            <input type="checkbox">
+
+                            <span>
+                                Manter conectado
+                            </span>
+
+                        </label>
+
+                        <a href="#"
+                           class="forgot">
+                            Esqueci minha senha
+                        </a>
 
                     </div>
 
                     <button class="btn-login">
-                        Entrar
+                        Entrar na plataforma
                     </button>
-
 
                 </form>
 
+                <div class="divider">
+                    <span>
+                        ou
+                    </span>
+                </div>
 
-            <div class="register">
+                <a href="/Auth/Register"
+                   class="btn-register">
 
-                Não possui conta?
+                    Criar nova conta
 
-                <a href="/Auth/Register">
-                    Criar conta
                 </a>
+
+                <div class="lgpd">
+
+                    Ao continuar, você concorda com nossos
+
+                    <a href="#">
+                        Termos de Uso
+                    </a>
+
+                    e
+
+                    <a href="#">
+                        Política de Privacidade
+                    </a>.
+
+                </div>
 
             </div>
 

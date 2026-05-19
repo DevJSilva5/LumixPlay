@@ -12,5 +12,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Usuario> Usuarios { get; set; }
 
+    public DbSet<Favorito> Favoritos { get; set; }
+
     public DbSet<Conteudo> Conteudos { get; set; }
 }

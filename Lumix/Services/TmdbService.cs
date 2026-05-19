@@ -17,7 +17,17 @@ public class TmdbService
     public async Task<JsonDocument> GetPopular()
     {
         var url =
-            $"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=pt-BR&include_adult=false";
+            $"https://api.themoviedb.org/3/discover/movie" +
+            $"?api_key={API_KEY}" +
+            $"&language=pt-BR" +
+            $"&sort_by=popularity.desc" +
+            $"&include_adult=false" +
+            $"&include_video=false" +
+            $"&vote_average.gte=6" +
+            $"&vote_count.gte=200" +
+            $"&without_genres=99" +
+            $"&certification_country=BR" +
+            $"&certification.lte=14";
 
         return await GetData(url);
     }
@@ -25,7 +35,18 @@ public class TmdbService
     public async Task<JsonDocument> GetByGenre(int genreId)
     {
         var url =
-            $"https://api.themoviedb.org/3/discover/movie?api_key={API_KEY}&with_genres={genreId}&language=pt-BR&include_adult=false";
+            $"https://api.themoviedb.org/3/discover/movie" +
+            $"?api_key={API_KEY}" +
+            $"&with_genres={genreId}" +
+            $"&language=pt-BR" +
+            $"&sort_by=popularity.desc" +
+            $"&include_adult=false" +
+            $"&include_video=false" +
+            $"&vote_average.gte=6" +
+            $"&vote_count.gte=150" +
+            $"&without_genres=99" +
+            $"&certification_country=BR" +
+            $"&certification.lte=14";
 
         return await GetData(url);
     }
@@ -54,4 +75,25 @@ public class TmdbService
             );
         }
     }
+
+    public async Task<JsonDocument> GetMovieDetails(int movieId)
+    {
+        var url =
+            $"https://api.themoviedb.org/3/movie/{movieId}" +
+            $"?api_key={API_KEY}" +
+            $"&language=pt-BR";
+
+        return await GetData(url);
+    }
+
+    public async Task<JsonDocument> GetMovieVideos(int movieId)
+    {
+        var url =
+            $"https://api.themoviedb.org/3/movie/{movieId}/videos" +
+            $"?api_key={API_KEY}" +
+            $"&language=pt-BR";
+
+        return await GetData(url);
+    }
 }
+

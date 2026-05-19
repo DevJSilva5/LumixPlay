@@ -9,11 +9,16 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Cadastro Lumix</title>
+    <title>Lumix • Cadastro</title>
 
-    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet"
+          href="~/css/login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
 </head>
 
@@ -21,43 +26,161 @@
 
     <div class="background"></div>
 
-    <div class="login-container">
+    <div class="background-overlay"></div>
 
-        <div class="login-box">
+    <div class="page">
 
-            <h1>LUMIX</h1>
+        <!-- ESQUERDA -->
 
-            <p class="subtitle">
-                Criar conta
-            </p>
+        <div class="welcome-side">
 
-            <form method="post">
+            <img src="/images/logo.png"
+                 class="hero-logo">
 
-                <div class="input-group">
-                    <input type="text" name="Nome" placeholder="Nome">
+            <div class="welcome-content">
+
+                <span class="tag">
+                    SUA JORNADA COMEÇA AQUI
+                </span>
+
+                <h1>
+                    Crie sua conta e entre no universo Lumix.
+                </h1>
+
+                <p>
+                    Assista trailers cinematográficos,
+                    salve seus filmes favoritos
+                    e viva uma experiência moderna de streaming
+                    desenvolvida para fãs de entretenimento.
+                </p>
+
+                <div class="features">
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Favoritos sincronizados na nuvem
+                    </div>
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Interface inspirada nos maiores streamings
+                    </div>
+
+                    <div class="feature">
+                        <span>✔</span>
+                        Descoberta inteligente de filmes
+                    </div>
+
                 </div>
 
-                <div class="input-group">
-                    <input type="email" name="Email" placeholder="Email">
+            </div>
+
+        </div>
+
+        <!-- CADASTRO -->
+
+        <div class="login-side">
+
+            <div class="login-box">
+
+                <div class="login-header">
+
+                    <h2>
+                        Criar conta
+                    </h2>
+
+                    <p>
+                        Cadastre-se para começar sua experiência
+                    </p>
+
                 </div>
 
-                <div class="input-group">
-                    <input type="password" name="Senha" placeholder="Senha">
+                <form method="post">
+
+                    <div class="input-group">
+
+                        <label>
+                            Nome completo
+                        </label>
+
+                        <input type="text"
+                               name="Nome"
+                               placeholder="Digite seu nome"
+                               required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input type="email"
+                               name="Email"
+                               placeholder="Digite seu email"
+                               required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Senha
+                        </label>
+
+                        <input type="password"
+                               name="Senha"
+                               placeholder="Crie uma senha"
+                               required>
+
+                    </div>
+
+                    <label class="terms">
+
+                        <input type="checkbox"
+                               required>
+
+                        <span>
+                            Li e aceito os
+                            <a href="#">
+                                Termos de Uso
+                            </a>
+                            e a
+                            <a href="#">
+                                Política de Privacidade
+                            </a>
+                            conforme a LGPD.
+                        </span>
+
+                    </label>
+
+                    <button class="btn-login">
+                        Criar minha conta
+                    </button>
+
+                </form>
+
+                <div class="divider">
+                    <span>
+                        ou
+                    </span>
                 </div>
 
-                <button class="btn-login">
-                    Cadastrar
-                </button>
+                <a href="/Auth/Login"
+                   class="btn-register">
 
-            </form>
+                    Já tenho uma conta
 
-            <div class="register">
-
-                Já possui conta?
-
-                <a href="/Auth/Login">
-                    Entrar
                 </a>
+
+                <div class="lgpd">
+
+                    Seus dados são protegidos e utilizados
+                    apenas para autenticação e personalização
+                    da sua experiência na plataforma.
+
+                </div>
 
             </div>
 

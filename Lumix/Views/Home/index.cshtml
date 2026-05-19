@@ -4,6 +4,8 @@
     Layout = null;
     ViewData["Title"] = "Lumix";
 
+
+
     var populares = ((JsonDocument)ViewBag.Populares)
         .RootElement
         .GetProperty("results");
@@ -19,6 +21,9 @@
     var comedia = ((JsonDocument)ViewBag.Comedia)
         .RootElement
         .GetProperty("results");
+
+    var favoritos =
+    ViewBag.Favoritos as List<Lumix.Models.Favorito>;
 
     var usuario = Context.Session.GetString("Usuario") ?? "Usuário";
 
@@ -86,7 +91,7 @@
             }
 
             .logo img {
-                width: 300px;
+                width: 200px;
                 margin-top: 10px;
                 object-fit: contain;
             }
@@ -221,6 +226,8 @@
                 transition: 0.35s;
                 cursor: pointer;
                 z-index: 1;
+                text-decoration: none;
+                color: white;
             }
 
                 .card:hover {
@@ -246,16 +253,18 @@
                 }
 
             .card-title {
-                margin-top: 12px;
-                font-size: 16px;
-                font-weight: 500;
-                width: 220px;    
-                white-space: normal;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-                line-height: 1.4;
-                min-height: 45px;
-            }
+                    margin-top: 12px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    width: 220px;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    line-height: 1.4;
+                    min-height: 45px;
+                    color: white;
+                    text-decoration: none;
+                }
 
             /* SETAS */
 
@@ -336,6 +345,53 @@
 
     </div>
 
+
+    <!-- FAVORITOS -->
+
+    @if (favoritos != null && favoritos.Any())
+{
+    <div class="section">
+
+        <div class="section-title">
+            Favoritos
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('favoritos')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="favoritos">
+
+                @foreach (var filme in favoritos)
+                {
+                    <a href="/Movie/Details/@filme.FilmeId"
+                       class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(filme.Poster)">
+
+                        <div class="card-title">
+                            @filme.Titulo
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('favoritos')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+}
+
     <!-- POPULARES -->
 
     <div class="section">
@@ -358,8 +414,10 @@
                 {
                     var titulo = filme.GetProperty("title").GetString();
                     var poster = filme.GetProperty("poster_path").GetString();
+                    var id = filme.GetProperty("id").GetInt32();
 
-                    <div class="card">
+                    <a href="/Movie/Details/@id"
+                       class="card">
 
                         <img src="https://image.tmdb.org/t/p/w500@(poster)">
 
@@ -367,7 +425,7 @@
                             @titulo
                         </div>
 
-                    </div>
+                    </a>
                 }
 
             </div>
@@ -399,21 +457,27 @@
             <div class="movies-row"
                  id="acao">
 
-                @foreach (var filme in acao.EnumerateArray().Take(12))
-                {
-                    var titulo = filme.GetProperty("title").GetString();
-                    var poster = filme.GetProperty("poster_path").GetString();
+            @foreach (var filme in acao.EnumerateArray().Take(12))
+            {
+                var id = filme.GetProperty("id").GetInt32();
 
-                    <div class="card">
+                var titulo =
+                    filme.GetProperty("title").GetString();
 
-                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+                var poster =
+                    filme.GetProperty("poster_path").GetString();
 
-                        <div class="card-title">
-                            @titulo
-                        </div>
+                <a href="/Movie/Details/@id"
+                   class="card">
 
+                    <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                    <div class="card-title">
+                        @titulo
                     </div>
-                }
+
+                </a>
+            }
 
             </div>
 
@@ -428,91 +492,105 @@
 
     <!-- ROMANCE -->
 
-    <div class="section">
+<div class="section">
 
-        <div class="section-title">
-            Romance
-        </div>
+    <div class="section-title">
+        Romance
+    </div>
 
-        <div class="slider-container">
+    <div class="slider-container">
 
-            <button class="arrow left"
-                    onclick="scrollLeftRow('romance')">
-                ❮
-            </button>
+        <button class="arrow left"
+                onclick="scrollLeftRow('romance')">
+            ❮
+        </button>
 
-            <div class="movies-row"
-                 id="romance">
+        <div class="movies-row"
+             id="romance">
 
-                @foreach (var filme in romance.EnumerateArray().Take(12))
-                {
-                    var titulo = filme.GetProperty("title").GetString();
-                    var poster = filme.GetProperty("poster_path").GetString();
+            @foreach (var filme in romance.EnumerateArray().Take(12))
+            {
+                var id = filme.GetProperty("id").GetInt32();
 
-                    <div class="card">
+                var titulo =
+                    filme.GetProperty("title").GetString();
 
-                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+                var poster =
+                    filme.GetProperty("poster_path").GetString();
 
-                        <div class="card-title">
-                            @titulo
-                        </div>
+                <a href="/Movie/Details/@id"
+                   class="card">
 
+                    <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                    <div class="card-title">
+                        @titulo
                     </div>
-                }
 
-            </div>
-
-            <button class="arrow right"
-                    onclick="scrollRightRow('romance')">
-                ❯
-            </button>
+                </a>
+            }
 
         </div>
+
+        <button class="arrow right"
+                onclick="scrollRightRow('romance')">
+            ❯
+        </button>
 
     </div>
 
+</div>
+
     <!-- COMÉDIA -->
 
-    <div class="section">
+<div class="section">
 
-        <div class="section-title">
-            Comédia
-        </div>
+    <div class="section-title">
+        Comédia
+    </div>
 
-        <div class="slider-container">
+    <div class="slider-container">
 
-            <button class="arrow left"
-                    onclick="scrollLeftRow('comedia')">
-                ❮
-            </button>
+        <button class="arrow left"
+                onclick="scrollLeftRow('comedia')">
+            ❮
+        </button>
 
-            <div class="movies-row"
-                 id="comedia">
+        <div class="movies-row"
+             id="comedia">
 
-                @foreach (var filme in comedia.EnumerateArray().Take(12))
-                {
-                    var titulo = filme.GetProperty("title").GetString();
-                    var poster = filme.GetProperty("poster_path").GetString();
+            @foreach (var filme in comedia.EnumerateArray().Take(12))
+            {
+                var id = filme.GetProperty("id").GetInt32();
 
-                    <div class="card">
+                var titulo =
+                    filme.GetProperty("title").GetString();
 
-                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+                var poster =
+                    filme.GetProperty("poster_path").GetString();
 
-                        <div class="card-title">
-                            @titulo
-                        </div>
+                <a href="/Movie/Details/@id"
+                   class="card">
 
+                    <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                    <div class="card-title">
+                        @titulo
                     </div>
-                }
 
-            </div>
-
-            <button class="arrow right"
-                    onclick="scrollRightRow('comedia')">
-                ❯
-            </button>
+                </a>
+            }
 
         </div>
+
+        <button class="arrow right"
+                onclick="scrollRightRow('comedia')">
+            ❯
+        </button>
+
+    </div>
+
+</div>
 
     </div>
 
@@ -539,6 +617,19 @@
             }
 
     </script>
+
+    <script>
+
+    window.addEventListener("storage", function (event) {
+
+        if (event.key === "favoritosUpdated") {
+
+            location.reload();
+        }
+
+    });
+
+</script>
 
 </body>
 
