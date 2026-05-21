@@ -8,6 +8,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<TmdbService>();
 
+/* CACHE NECESSÁRIO PRA SESSION */
+
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -26,6 +30,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
 
     options.Cookie.IsEssential = true;
+
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
 var app = builder.Build();
@@ -53,7 +59,8 @@ app.Use(async (context, next) =>
         path.StartsWith("/images") ||
         path.StartsWith("/lib");
 
-    var usuario = context.Session.GetString("Usuario");
+    var usuario =
+        context.Session.GetString("Usuario");
 
     if (string.IsNullOrEmpty(usuario) && !rotaLiberada)
     {
