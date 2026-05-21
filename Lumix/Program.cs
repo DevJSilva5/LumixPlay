@@ -8,20 +8,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<TmdbService>();
 
-/* CACHE NECESSÁRIO PRA SESSION */
-
 builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")
-        )
-    )
-);
-
-/* SESSION */
 
 builder.Services.AddSession(options =>
 {
@@ -32,19 +19,30 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 
     options.Cookie.SameSite = SameSiteMode.Lax;
+
+    options.Cookie.SecurePolicy =
+        CookieSecurePolicy.Always;
 });
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(
+            builder.Configuration.GetConnectionString("DefaultConnection")
+        )
+    )
+);
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+/* REMOVA ISSO */
+/* app.UseHttpsRedirection(); */
 
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseSession();
-
-/* BLOQUEIA ACESSO SEM LOGIN */
 
 app.Use(async (context, next) =>
 {
@@ -72,8 +70,6 @@ app.Use(async (context, next) =>
 });
 
 app.UseAuthorization();
-
-/* localhost -> login */
 
 app.MapGet("/", context =>
 {
