@@ -44,40 +44,46 @@ public class ProfileController : Controller
             if (foto != null && foto.Length > 0)
             {
                 var extensao =
-                    Path.GetExtension(foto.FileName);
+                    Path.GetExtension(foto.FileName)
+                    .ToLower();
 
                 var nomeArquivo =
                     Guid.NewGuid().ToString()
                     + extensao;
 
-                var caminhoPasta =
+                var pastaUploads =
                     Path.Combine(
                         Directory.GetCurrentDirectory(),
-                        "wwwroot/uploads"
+                        "wwwroot",
+                        "uploads"
                     );
 
-                /* CRIA PASTA */
-
-                if (!Directory.Exists(caminhoPasta))
+                if (!Directory.Exists(pastaUploads))
                 {
                     Directory.CreateDirectory(
-                        caminhoPasta
+                        pastaUploads
                     );
                 }
 
                 var caminhoArquivo =
                     Path.Combine(
-                        caminhoPasta,
+                        pastaUploads,
                         nomeArquivo
                     );
 
                 using (var stream =
-                   new FileStream(
-                       caminhoArquivo,
-                       FileMode.Create
-                   ))
+                    new FileStream(
+                        caminhoArquivo,
+                        FileMode.Create,
+                        FileAccess.Write,
+                        FileShare.None,
+                        4096,
+                        true
+                    ))
                 {
                     await foto.CopyToAsync(stream);
+
+                    await stream.FlushAsync();
                 }
 
                 usuario.FotoPerfil =

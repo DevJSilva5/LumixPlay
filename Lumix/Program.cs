@@ -35,6 +35,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize =
+        52428800;
+});
+
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 52428800;
+});
+
 var app = builder.Build();
 
 

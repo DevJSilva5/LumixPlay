@@ -7,13 +7,14 @@
 
     var fotoPerfil = Context.Session.GetString("FotoPerfil");
 
-    if (string.IsNullOrEmpty(fotoPerfil))
+    if (string.IsNullOrWhiteSpace(fotoPerfil))
     {
         fotoPerfil = "/images/perfil-default.png";
     }
 }
 
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
@@ -37,7 +38,7 @@
             }
 
             body {
-                font-family: 'Poppins', sans-serif;
+                font-family: 'Poppins',sans-serif;
                 background: #090909;
                 color: white;
                 overflow-x: hidden;
@@ -84,7 +85,7 @@
                 background: rgba(255,255,255,0.08);
                 padding: 12px 20px;
                 border-radius: 12px;
-                transition: 0.3s;
+                transition: .3s;
                 font-weight: 500;
             }
 
@@ -134,9 +135,9 @@
             /* FOTO */
 
             .profile-photo-area {
-                position: relative;
-                width: fit-content;
-                margin: auto;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
             }
 
             .profile-photo {
@@ -145,15 +146,16 @@
                 border-radius: 50%;
                 object-fit: cover;
                 border: 5px solid #9d4edd;
-                box-shadow: 0 15px 40px rgba(157,78,221,0.4);
-                transition: 0.3s;
+                box-shadow: 0 15px 40px rgba(157,78,221,.4);
+                transition: .3s;
+                background: #111;
             }
 
                 .profile-photo:hover {
                     transform: scale(1.04);
                 }
 
-            /* NOME */
+            /* TEXTO */
 
             .profile-name {
                 font-size: 38px;
@@ -183,7 +185,7 @@
                 border-radius: 18px;
                 padding: 20px;
                 text-align: left;
-                transition: 0.3s;
+                transition: .3s;
             }
 
                 .info-box:hover {
@@ -222,7 +224,10 @@
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
-                transition: 0.3s;
+                transition: .3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .edit-btn {
@@ -247,29 +252,8 @@
                     transform: scale(1.03);
                 }
 
-            /* RESPONSIVO */
-
-            @@media(max-width: 700px) {
-
-                .profile-card {
-                    padding: 35px 25px;
-                }
-
-                .buttons {
-                    flex-direction: column;
-                }
-
-                .profile-name {
-                    font-size: 30px;
-                }
-
-                .navbar {
-                    padding: 0 20px;
-                }
-
-                .logo img {
-                    width: 170px;
-                }
+            .logout-link {
+                flex: 1;
             }
 
             /* MODAL */
@@ -310,6 +294,62 @@
                 text-align: center;
             }
 
+            /* UPLOAD */
+
+            .upload-area {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 30px;
+            }
+
+            .upload-photo-box {
+                position: relative;
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                overflow: hidden;
+                cursor: pointer;
+                border: 4px solid #7b2cbf;
+                transition: .3s;
+            }
+
+                .upload-photo-box:hover {
+                    border-color: #c77dff;
+                    transform: scale(1.03);
+                    box-shadow: 0 15px 35px rgba(123,44,191,.45);
+                }
+
+            .preview-photo {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                background: #111;
+            }
+
+            .upload-overlay {
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,.55);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+                opacity: 0;
+                transition: .3s;
+            }
+
+            .upload-photo-box:hover .upload-overlay {
+                opacity: 1;
+            }
+
+            #fotoInput {
+                display: none;
+            }
+
+            /* INPUT */
+
             .input-group {
                 margin-bottom: 20px;
             }
@@ -341,15 +381,7 @@
                         box-shadow: 0 0 15px rgba(157,78,221,.3);
                     }
 
-            .preview-photo {
-                width: 120px;
-                height: 120px;
-                border-radius: 50%;
-                object-fit: cover;
-                display: block;
-                margin: 10px auto 25px;
-                border: 4px solid #9d4edd;
-            }
+            /* BOTÕES MODAL */
 
             .modal-buttons {
                 display: flex;
@@ -387,70 +419,42 @@
                     transform: scale(1.03);
                 }
 
-            /* RESPONSIVIDADE GLOBAL */
-
-            img,
-            video,
-            iframe {
-                max-width: 100%;
-            }
-
-            body {
-                overflow-x: hidden;
-            }
-
-            /* TABLET */
-
-            @@media(max-width:1024px) {
-
-                .content {
-                    padding: 0 20px;
-                }
-            }
-
-            /* MOBILE */
+            /* RESPONSIVO */
 
             @@media(max-width:768px) {
 
-                h1 {
-                    font-size: 32px !important;
+                .profile-container {
+                    padding-top: 120px;
                 }
 
-                h2 {
-                    font-size: 26px !important;
+                .profile-card {
+                    padding: 35px 25px;
                 }
 
-                h3 {
-                    font-size: 22px !important;
+                .profile-photo {
+                    width: 130px;
+                    height: 130px;
                 }
 
-                p {
-                    font-size: 15px !important;
+                .profile-name {
+                    font-size: 28px;
                 }
 
                 .buttons {
                     flex-direction: column;
                 }
 
-                .btn {
-                    width: 100%;
-                }
-                
-                .profile-container{
-                    padding-top:120px;
+                .logo img {
+                    width: 170px;
                 }
 
-                .profile-photo{
-                    width:120px;
-                    height:120px;
+                .upload-photo-box {
+                    width: 120px;
+                    height: 120px;
                 }
 
-                .profile-name{
-                    font-size:28px;
-                }
-
-                .buttons{
-                    flex-direction:column;
+                .modal-box {
+                    margin: 20px;
                 }
             }
 
@@ -474,6 +478,7 @@
                class="back-btn">
 
             ← Voltar
+
         </a>
 
     </div>
@@ -484,12 +489,11 @@
 
         <div class="profile-card">
 
-
             <div class="profile-photo-area">
 
-                <img src="@(string.IsNullOrEmpty(fotoPerfil)
-                                         ? "/images/perfil-default.png"
-                                         : fotoPerfil)"
+                <img src="@(string.IsNullOrWhiteSpace(fotoPerfil)
+                                                         ? "/images/perfil-default.png"
+                                                         : fotoPerfil)"
                      class="profile-photo">
 
             </div>
@@ -539,84 +543,14 @@
 
                 </button>
 
-                <a href="/Auth/Logout"
-                       style="flex:1;">
+                <a href="/Profile/Logout"
+                       class="logout-link">
 
-                    <button class="btn logout-btn"
-                            style="width:100%;">
-
+                    <div class="btn logout-btn">
                         Sair
-
-                    </button>
+                    </div>
 
                 </a>
-
-            </div>
-
-        </div>
-        <!-- MODAL -->
-
-        <div class="modal-overlay"
-             id="modalOverlay">
-
-            <div class="modal-box">
-
-                <div class="modal-title">
-                    Editar Perfil
-                </div>
-
-                <form method="post"
-                      action="/Profile/Editar"
-                      enctype="multipart/form-data">
-
-                    <div class="input-group">
-
-                        <label>
-                            Nome
-                        </label>
-
-                        <input type="text"
-                               name="nome"
-                               value="@usuario">
-
-                    </div>
-
-                    <div class="input-group">
-
-                        <label>
-                            Foto de Perfil
-                        </label>
-
-                        <input type="file"
-                               name="foto"
-                               accept="image/*"
-                               onchange="previewArquivo(event)">
-                    </div>
-
-                    <img src="@fotoPerfil"
-                         id="preview"
-                         class="preview-photo">
-
-                    <div class="modal-buttons">
-
-                        <button type="button"
-                                class="cancel-btn"
-                                onclick="fecharModal()">
-
-                            Cancelar
-
-                        </button>
-
-                        <button type="submit"
-                                class="save-btn">
-
-                            Salvar
-
-                        </button>
-
-                    </div>
-
-                </form>
 
             </div>
 
@@ -624,9 +558,86 @@
 
     </div>
 
+    <!-- MODAL -->
+
+    <div class="modal-overlay"
+         id="modalOverlay">
+
+        <div class="modal-box">
+
+            <div class="modal-title">
+                Editar Perfil
+            </div>
+
+            <form method="post"
+                  action="/Profile/Editar"
+                  enctype="multipart/form-data">
+
+                <div class="upload-area">
+
+                    <label for="fotoInput"
+                           class="upload-photo-box">
+
+                        <img src="@(string.IsNullOrWhiteSpace(fotoPerfil)
+                                                                                 ? "/images/perfil-default.png"
+                                                                                 : fotoPerfil)"
+                             id="preview"
+                             class="preview-photo">
+
+                        <div class="upload-overlay">
+                            Alterar Foto
+                        </div>
+
+                    </label>
+
+                    <input type="file"
+                           id="fotoInput"
+                           name="foto"
+                           accept="image/*"
+                           onchange="previewArquivo(event)">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+                        Nome
+                    </label>
+
+                    <input type="text"
+                           name="nome"
+                           value="@usuario">
+
+                </div>
+
+                <div class="modal-buttons">
+
+                    <button type="button"
+                            class="cancel-btn"
+                            onclick="fecharModal()">
+
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit"
+                            class="save-btn">
+
+                        Salvar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
     <script>
 
-            function abrirModal() {
+            function abrirModal(){
 
                 document
                     .getElementById("modalOverlay")
@@ -634,7 +645,7 @@
                     .add("active");
             }
 
-            function fecharModal() {
+            function fecharModal(){
 
                 document
                     .getElementById("modalOverlay")
@@ -642,15 +653,19 @@
                     .remove("active");
             }
 
-            function previewArquivo(event) {
+            function previewArquivo(event){
 
                 const imagem =
                     document.getElementById("preview");
 
-                imagem.src =
-                    URL.createObjectURL(
-                        event.target.files[0]
-                    );
+                const arquivo =
+                    event.target.files[0];
+
+                if(arquivo){
+
+                    imagem.src =
+                        URL.createObjectURL(arquivo);
+                }
             }
 
     </script>
