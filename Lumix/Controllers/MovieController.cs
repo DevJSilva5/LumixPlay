@@ -61,6 +61,28 @@ public class MovieController : Controller
         return View();
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Buscar(string termo)
+    {
+        if (string.IsNullOrWhiteSpace(termo))
+        {
+            return Json(new List<object>());
+        }
+
+        using var client = new HttpClient();
+
+        var url =
+            $"https://api.themoviedb.org/3/search/movie?api_key=5f65a615f82aec9b40abfb17c173e794&language=pt-BR&query={termo}";
+
+        var response =
+            await client.GetStringAsync(url);
+
+        return Content(
+            response,
+            "application/json"
+        );
+    }
+
     [HttpPost]
     public IActionResult ToggleFavoritoAjax(
         [FromBody] FavoritoRequest request
