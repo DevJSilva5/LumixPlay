@@ -38,6 +38,19 @@ public class AuthController : Controller
 
     public IActionResult Register()
     {
+        var usuario =
+            HttpContext.Session.GetString("Usuario");
+
+        /* SE ESTIVER LOGADO */
+
+        if (!string.IsNullOrEmpty(usuario))
+        {
+            return RedirectToAction(
+                "Index",
+                "Home"
+            );
+        }
+
         return View();
     }
 
@@ -51,16 +64,66 @@ public class AuthController : Controller
             return View();
         }
 
+        /* SENHA HASH */
+
         usuario.Senha =
             BCrypt.Net.BCrypt.HashPassword(
                 usuario.Senha
             );
 
+        /* FOTO DEFAULT */
+
+        if (string.IsNullOrEmpty(usuario.FotoPerfil))
+        {
+            usuario.FotoPerfil =
+                "/images/perfil-default.png";
+        }
+
+        /* SALVA */
+
         _context.Usuarios.Add(usuario);
 
         _context.SaveChanges();
 
-        return RedirectToAction("Login");
+        /* LOGIN AUTOMÁTICO */
+
+        HttpContext.Session.SetString(
+            "Usuario",
+            usuario.Nome
+        );
+
+        HttpContext.Session.SetString(
+            "Email",
+            usuario.Email
+        );
+
+        HttpContext.Session.SetString(
+            "FotoPerfil",
+            usuario.FotoPerfil
+        );
+
+        /* COOKIE */
+
+        HttpContext.Response.Cookies.Append(
+            "LumixLogin",
+            "true",
+            new CookieOptions
+            {
+                Expires =
+                    DateTime.Now.AddDays(30),
+
+                HttpOnly = true,
+
+                IsEssential = true
+            }
+        );
+
+        /* REDIRECIONA DIRETO */
+
+        return RedirectToAction(
+            "Index",
+            "Home"
+        );
     }
 
     /* LOGIN POST */
