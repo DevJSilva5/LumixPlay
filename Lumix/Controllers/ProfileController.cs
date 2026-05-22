@@ -23,7 +23,7 @@ public class ProfileController : Controller
     }
 
     [HttpPost]
-    public IActionResult Editar(
+    public async Task<IActionResult> Editar(
     string nome,
     IFormFile foto
 )
@@ -72,12 +72,12 @@ public class ProfileController : Controller
                     );
 
                 using (var stream =
-                       new FileStream(
-                           caminhoArquivo,
-                           FileMode.Create
-                       ))
+                   new FileStream(
+                       caminhoArquivo,
+                       FileMode.Create
+                   ))
                 {
-                    foto.CopyTo(stream);
+                    await foto.CopyToAsync(stream);
                 }
 
                 usuario.FotoPerfil =

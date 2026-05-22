@@ -487,7 +487,9 @@
 
             <div class="profile-photo-area">
 
-                <img src="@fotoPerfil"
+                <img src="@(string.IsNullOrEmpty(fotoPerfil)
+                                         ? "/images/perfil-default.png"
+                                         : fotoPerfil)"
                      class="profile-photo">
 
             </div>
