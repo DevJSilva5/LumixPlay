@@ -22,6 +22,8 @@ builder.Services.AddSession(options =>
 
     options.Cookie.SecurePolicy =
         CookieSecurePolicy.Always;
+
+    options.Cookie.MaxAge = null;
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -35,8 +37,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-/* REMOVA ISSO */
-/* app.UseHttpsRedirection(); */
 
 app.UseStaticFiles();
 

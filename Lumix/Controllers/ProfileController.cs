@@ -23,25 +23,80 @@ public class ProfileController : Controller
     }
 
     [HttpPost]
-    public IActionResult Editar(string nome, string fotoPerfil)
+    public IActionResult Editar(
+    string nome,
+    IFormFile foto
+)
     {
-        var email = HttpContext.Session.GetString("Email");
+        var email =
+            HttpContext.Session.GetString("Email");
 
-        var usuario = _context.Usuarios
+        var usuario =
+            _context.Usuarios
             .FirstOrDefault(x => x.Email == email);
 
         if (usuario != null)
         {
             usuario.Nome = nome;
 
-            if (!string.IsNullOrEmpty(fotoPerfil))
+            /* FOTO */
+
+            if (foto != null && foto.Length > 0)
             {
-                usuario.FotoPerfil = fotoPerfil;
+                var extensao =
+                    Path.GetExtension(foto.FileName);
+
+                var nomeArquivo =
+                    Guid.NewGuid().ToString()
+                    + extensao;
+
+                var caminhoPasta =
+                    Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot/uploads"
+                    );
+
+                /* CRIA PASTA */
+
+                if (!Directory.Exists(caminhoPasta))
+                {
+                    Directory.CreateDirectory(
+                        caminhoPasta
+                    );
+                }
+
+                var caminhoArquivo =
+                    Path.Combine(
+                        caminhoPasta,
+                        nomeArquivo
+                    );
+
+                using (var stream =
+                       new FileStream(
+                           caminhoArquivo,
+                           FileMode.Create
+                       ))
+                {
+                    foto.CopyTo(stream);
+                }
+
+                usuario.FotoPerfil =
+                    "/uploads/" + nomeArquivo;
             }
 
             _context.SaveChanges();
 
-            HttpContext.Session.SetString("Usuario", usuario.Nome);
+            /* UPDATE SESSION */
+
+            HttpContext.Session.SetString(
+                "Usuario",
+                usuario.Nome
+            );
+
+            HttpContext.Session.SetString(
+                "FotoPerfil",
+                usuario.FotoPerfil
+            );
         }
 
         return RedirectToAction("Index");

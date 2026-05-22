@@ -132,6 +132,26 @@ public class AuthController : Controller
                 "ContinuarLogado",
                 "true"
             );
+
+            HttpContext.Response.Cookies.Append(
+                "LumixLogin",
+                "true",
+                new CookieOptions
+                {
+                    Expires =
+                        DateTime.Now.AddDays(30),
+
+                    HttpOnly = true,
+
+                    IsEssential = true
+                }
+            );
+        }
+        else
+        {
+            HttpContext.Response.Cookies.Delete(
+                "LumixLogin"
+            );
         }
 
         return RedirectToAction(
@@ -145,6 +165,10 @@ public class AuthController : Controller
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
+
+        HttpContext.Response.Cookies.Delete(
+            "LumixLogin"
+        );
 
         return RedirectToAction(
             "Login",

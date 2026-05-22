@@ -6,11 +6,6 @@
     var filme =
         ((JsonDocument)ViewBag.Movie).RootElement;
 
-    var videos =
-        ((JsonDocument)ViewBag.Videos)
-        .RootElement
-        .GetProperty("results");
-
     string titulo = "";
     string descricao = "";
     string banner = "";
@@ -63,18 +58,41 @@
 
     string trailerKey = "";
 
-    foreach (var video in videos.EnumerateArray())
+    if (ViewBag.Videos != null)
     {
-        if (
-            video.GetProperty("site").GetString() == "YouTube"
-            &&
-            video.GetProperty("type").GetString() == "Trailer"
-        )
-        {
-            trailerKey =
-                video.GetProperty("key").GetString() ?? "";
+        var videosDocument =
+            ((JsonDocument)ViewBag.Videos).RootElement;
 
-            break;
+        JsonElement results;
+
+        if (videosDocument.TryGetProperty("results", out results))
+        {
+            foreach (var video in results.EnumerateArray())
+            {
+                if (
+                    video.TryGetProperty("site", out var siteProp)
+                    &&
+                    video.TryGetProperty("type", out var typeProp)
+                    &&
+                    video.TryGetProperty("key", out var keyProp)
+                )
+                {
+                    var site = siteProp.GetString();
+                    var type = typeProp.GetString();
+
+                    if (
+                        site == "YouTube"
+                        &&
+                        type == "Trailer"
+                    )
+                    {
+                        trailerKey =
+                            keyProp.GetString() ?? "";
+
+                        break;
+                    }
+                }
+            }
         }
     }
 }
@@ -97,184 +115,263 @@
 
     <style>
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body{
-            background:#090909;
-            color:white;
-            font-family:'Poppins',sans-serif;
-            overflow-x:hidden;
-        }
+            html {
+                overflow-x: hidden;
+            }
 
-        .hero{
-            width:100%;
-            height:100vh;
-            position:relative;
-            overflow:hidden;
-            background:black;
-        }
+            body {
+                background: #090909;
+                color: white;
+                font-family: 'Poppins',sans-serif;
+                overflow-x: hidden;
+            }
 
-        .banner-image{
-            position:absolute;
-            inset:0;
+            .hero {
+                width: 100%;
+                min-height: 100vh;
+                position: relative;
+                overflow: hidden;
+                background: black;
+            }
 
-            width:100%;
-            height:100%;
+            .banner-image {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 1;
+                opacity: 1;
+                transition: opacity 2s ease, transform 8s ease;
+                transform: scale(1);
+            }
 
-            object-fit:cover;
+            .trailer-video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100vw;
+                height: 56.25vw;
+                min-height: 100vh;
+                min-width: 177.77vh;
+                transform: translate(-50%,-50%);
+                border: none;
+                pointer-events: none;
+                opacity: 0;
+                z-index: 2;
+                transition: opacity 2s ease;
+                filter: brightness(.9) contrast(1.05) saturate(1.05);
+            }
 
-            z-index:1;
+            .overlay {
+                position: absolute;
+                inset: 0;
+                z-index: 3;
+                background: linear-gradient( to right, rgba(0,0,0,0.95) 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) ), linear-gradient( to top, #090909, transparent 40% );
+            }
 
-            opacity:1;
+            .content {
+                position: absolute;
+                z-index: 10;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 70px;
+                max-width: 650px;
+                width: 100%;
+                padding-right: 30px;
+            }
 
-            transition:
-                opacity 2s ease,
-                transform 8s ease;
+            .title {
+                font-size: 70px;
+                font-weight: 700;
+                margin-bottom: 20px;
+                line-height: 1.05;
+            }
 
-            transform:scale(1);
-        }
+            .meta {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-bottom: 25px;
+                color: #cfcfcf;
+                font-size: 17px;
+            }
 
-        .trailer-video{
-            position:absolute;
+            .rating {
+                color: #46d369;
+                font-weight: 600;
+            }
 
-            top:50%;
-            left:50%;
+            .description {
+                font-size: 18px;
+                line-height: 1.8;
+                color: #e4e4e4;
+                margin-bottom: 35px;
+            }
 
-            width:140%;
-            height:140%;
+            .buttons {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
 
-            transform:translate(-50%,-50%);
+            .btn {
+                padding: 15px 28px;
+                border: none;
+                border-radius: 10px;
+                font-size: 17px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: .3s;
+            }
 
-            border:none;
+            .play {
+                background: white;
+                color: black;
+            }
 
-            pointer-events:none;
+                .play:hover {
+                    transform: scale(1.05);
+                }
 
-            opacity:0;
+            .back {
+                background: rgba(255,255,255,.15);
+                color: white;
+            }
 
-            z-index:2;
+                .back:hover {
+                    background: rgba(255,255,255,.25);
+                }
 
-            transition:opacity 2.5s ease;
+            .favorite-btn {
+                background: none;
+                border: none;
+                outline: none;
+                color: white;
+                font-size: 34px;
+                cursor: pointer;
+                transition: .3s;
+                margin-left: 5px;
+            }
 
-            filter:
-                brightness(.85)
-                contrast(1.1)
-                saturate(1.1);
-        }
+                .favorite-btn:hover {
+                    transform: scale(1.15);
+                }
 
-        .overlay{
-            position:absolute;
-            inset:0;
-            z-index:3;
+                .favorite-btn.active {
+                    color: #ff1e56;
+                    text-shadow: 0 0 10px rgba(255,30,86,.8), 0 0 25px rgba(255,30,86,.5);
+                }
 
-            background:
-                linear-gradient(
-                    to right,
-                    rgba(0,0,0,0.95) 20%,
-                    rgba(0,0,0,0.5) 60%,
-                    rgba(0,0,0,0.9)
-                ),
-                linear-gradient(
-                    to top,
-                    #090909,
-                    transparent 40%
-                );
-        }
+            img,
+            video,
+            iframe {
+                max-width: 100%;
+            }
 
-        .content{
-            position:absolute;
-            z-index:10;
-            top:50%;
-            transform:translateY(-50%);
-            left:70px;
-            max-width:650px;
-        }
+            @@media(max-width:1024px) {
 
-        .title{
-            font-size:70px;
-            font-weight:700;
-            margin-bottom:20px;
-        }
+                .content {
+                    left: 40px;
+                    max-width: 600px;
+                }
 
-        .meta{
-            display:flex;
-            align-items:center;
-            gap:20px;
-            margin-bottom:25px;
-            color:#cfcfcf;
-            font-size:17px;
-        }
+                .title {
+                    font-size: 56px;
+                }
 
-        .rating{
-            color:#46d369;
-            font-weight:600;
-        }
+                .description {
+                    font-size: 16px;
+                }
+            }
 
-        .description{
-            font-size:18px;
-            line-height:1.8;
-            color:#e4e4e4;
-            margin-bottom:35px;
-        }
+            @@media(max-width:768px) {
 
-        .buttons{
-            display:flex;
-            gap:15px;
-        }
+                .hero {
+                    min-height: 100vh;
+                }
 
-        .btn{
-            padding:15px 28px;
-            border:none;
-            border-radius:10px;
-            font-size:17px;
-            font-weight:600;
-            cursor:pointer;
-            transition:.3s;
-        }
+                .overlay {
+                    background: linear-gradient( to top, rgba(0,0,0,0.98), rgba(0,0,0,0.55) );
+                }
 
-        .play{
-            background:white;
-            color:black;
-        }
+                .content {
+                    position: relative;
+                    top: auto;
+                    margin-top: 180px;
+                    left: auto;
+                    transform: none;
+                    width: 100%;
+                    padding: 110px 20px 50px;
+                }
 
-        .play:hover{
-            transform:scale(1.05);
-        }
+                .title {
+                    font-size: 38px;
+                    line-height: 1.1;
+                    margin-bottom: 18px;
+                }
 
-        .back{
-            background:rgba(255,255,255,.15);
-            color:white;
-        }
+                .meta {
+                    gap: 12px;
+                    font-size: 14px;
+                    margin-bottom: 20px;
+                }
 
-        .back:hover{
-            background:rgba(255,255,255,.25);
-        }
+                .description {
+                    font-size: 15px;
+                    line-height: 1.7;
+                    margin-bottom: 30px;
+                }
 
-        .favorite-btn{
-            background:none;
-            border:none;
-            outline:none;
-            color:white;
-            font-size:34px;
-            cursor:pointer;
-            transition:.3s;
-            margin-left:5px;
-        }
+                .buttons {
+                    flex-direction: column;
+                }
 
-        .favorite-btn:hover{
-            transform:scale(1.15);
-        }
+                .btn {
+                    width: 100%;
+                    font-size: 15px;
+                    padding: 15px;
+                }
 
-        .favorite-btn.active{
-            color:#ff1e56;
+                .favorite-btn {
+                    font-size: 30px;
+                }
 
-            text-shadow:
-                0 0 10px rgba(255,30,86,.8),
-                0 0 25px rgba(255,30,86,.5);
-        }
+                .trailer-video {
+                    display: none;
+                }
+            }
+
+            @@media(max-width:480px) {
+
+                .content {
+                    padding: 100px 16px 40px;
+                    
+                }
+
+                .title {
+                    font-size: 32px;
+                }
+
+                .description {
+                    font-size: 14px;
+                }
+
+                .meta {
+                    font-size: 13px;
+                }
+
+                .trailer-video {
+                    display: none;
+                }
+            }
 
     </style>
 
@@ -286,24 +383,21 @@
 
         @if (!string.IsNullOrEmpty(trailerKey))
         {
-            <img
-                id="bannerImage"
-                class="banner-image"
-                src="https://image.tmdb.org/t/p/original@(banner)">
+            <img id="bannerImage"
+                 class="banner-image"
+                 src="https://image.tmdb.org/t/p/original@(banner)">
 
-            <iframe
-                id="trailer"
-                class="trailer-video"
-                src="https://www.youtube.com/embed/@trailerKey?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=@trailerKey&vq=hd2160"
-                title="@titulo"
-                allow="autoplay; encrypted-media">
+            <iframe id="trailer"
+                    class="trailer-video"
+                    src="https://www.youtube.com/embed/@trailerKey?autoplay=1&mute=1&cc_load_policy=0&cc_lang_pref=pt&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=@trailerKey&vq=highres"
+                    title="@titulo"
+                    allow="autoplay; encrypted-media">
             </iframe>
         }
         else
         {
-            <img
-                class="banner-image"
-                src="https://image.tmdb.org/t/p/original@(banner)">
+            <img class="banner-image"
+                 src="https://image.tmdb.org/t/p/original@(banner)">
         }
 
         <div class="overlay"></div>
@@ -361,73 +455,69 @@
 
     <script>
 
-        window.addEventListener("load", () => {
+            window.addEventListener("load", () => {
 
-            const trailer =
-                document.getElementById("trailer");
+                const trailer =
+                    document.getElementById("trailer");
 
-            if(trailer){
+                if(trailer){
 
-                setTimeout(() => {
+                    setTimeout(() => {
 
-                    trailer.style.opacity = "1";
+                        trailer.style.opacity = "1";
 
-                }, 5000);
+                    }, 5000);
 
-            }
+                }
 
-        });
+            });
 
     </script>
 
     <script>
 
-    async function toggleFavorito() {
+            async function toggleFavorito() {
 
-        const button =
-            document.getElementById("favoriteBtn");
+                const button =
+                    document.getElementById("favoriteBtn");
 
-        const response =
-            await fetch('/Movie/ToggleFavoritoAjax', {
+                const response =
+                    await fetch('/Movie/ToggleFavoritoAjax', {
 
-                method: 'POST',
+                        method: 'POST',
 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
 
-                body: JSON.stringify({
+                        body: JSON.stringify({
 
-                    filmeId: @filme.GetProperty("id").GetInt32(),
+                            filmeId: @filmeId,
 
-                    titulo: '@Html.Raw(titulo.Replace("'", "\\'"))',
+                            titulo: '@Html.Raw(titulo.Replace("'", "\\'"))',
 
-                    poster: '@filme.GetProperty("poster_path").GetString()'
-                })
-            });
+                            poster: '@poster'
+                        })
+                    });
 
-        const data = await response.json();
+                const data = await response.json();
 
-        if (data.favoritado) {
+                if (data.favoritado) {
 
-            button.classList.add("active");
+                    button.classList.add("active");
 
-        } else {
+                } else {
 
-            button.classList.remove("active");
-        }
+                    button.classList.remove("active");
+                }
 
-        /*
-            ATUALIZA HOME EM TEMPO REAL
-        */
+                localStorage.setItem(
+                    "favoritosUpdated",
+                    Date.now()
+                );
+            }
 
-        localStorage.setItem(
-            "favoritosUpdated",
-            Date.now()
-        );
-    }
-
-</script>
+    </script>
 
 </body>
 
