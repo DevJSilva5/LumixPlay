@@ -50,437 +50,569 @@
 
     <style>
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-
-        html{
-            overflow-x:hidden;
-        }
-
-        body{
-            background:#090909;
-            color:white;
-            font-family:'Poppins',sans-serif;
-            overflow-x:hidden;
-        }
-
-        a{
-            text-decoration:none;
-        }
-
-        /* NAVBAR */
-
-        .navbar{
-            width:100%;
-            background:rgba(10,10,10,0.95);
-            backdrop-filter:blur(8px);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            min-height:80px;
-            padding:0 50px;
-            border-bottom:2px solid #7b2cbf;
-            position:fixed;
-            top:0;
-            z-index:999999;
-        }
-
-        .logo img{
-            width:200px;
-            margin-top:10px;
-            object-fit:contain;
-        }
-
-        /* RIGHT */
-
-        .navbar-right{
-            display:flex;
-            align-items:center;
-            gap:18px;
-            margin-left:auto;
-        }
-
-        /* SEARCH */
-
-        .search-container{
-            position:relative;
-            display:flex;
-            align-items:center;
-        }
-
-        .search-toggle{
-            width:45px;
-            height:45px;
-            border:none;
-            border-radius:50%;
-            background:rgba(255,255,255,.08);
-            color:white;
-            cursor:pointer;
-            font-size:18px;
-            transition:.3s;
-        }
-
-        .search-toggle:hover{
-            background:#7b2cbf;
-            transform:scale(1.08);
-        }
-
-        .search-input{
-            width:0;
-            opacity:0;
-            height:45px;
-            border:none;
-            outline:none;
-            background:rgba(255,255,255,.08);
-            color:white;
-            border-radius:14px;
-            margin-left:10px;
-            padding:0;
-            transition:.4s;
-            font-size:15px;
-        }
-
-        .search-container.active .search-input{
-            width:260px;
-            opacity:1;
-            padding:0 18px;
-        }
-
-        .search-results{
-            position:absolute;
-            top:60px;
-            right:0;
-            width:320px;
-            max-height:500px;
-            overflow-y:auto;
-            background:#141414;
-            border-radius:18px;
-            display:none;
-            padding:10px;
-            box-shadow:0 20px 50px rgba(0,0,0,.7);
-            z-index:99999;
-        }
-
-        .search-results.active{
-            display:block;
-        }
-
-        .search-item{
-            display:flex;
-            align-items:center;
-            gap:14px;
-            padding:10px;
-            border-radius:12px;
-            transition:.25s;
-        }
-
-        .search-item:hover{
-            background:rgba(255,255,255,.08);
-        }
-
-        .search-item img{
-            width:55px;
-            height:80px;
-            object-fit:cover;
-            border-radius:10px;
-        }
-
-        .search-item span{
-            color:white;
-            font-size:15px;
-            font-weight:500;
-        }
-
-        /* PERFIL */
-
-        .profile-area{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            color:white;
-            background:rgba(255,255,255,0.05);
-            padding:8px 14px;
-            border-radius:12px;
-            transition:0.3s;
-        }
-
-        .profile-area:hover{
-            background:rgba(255,255,255,0.1);
-        }
-
-        .profile-pic{
-            width:42px;
-            height:42px;
-            border-radius:50%;
-            object-fit:cover;
-            border:2px solid #c77dff;
-            background:#1a1a1a;
-        }
-
-        .profile-name{
-            font-size:15px;
-            font-weight:500;
-        }
-
-        /* MENU */
-
-        .menu-toggle{
-            display:none;
-            font-size:32px;
-            cursor:pointer;
-            color:white;
-        }
-
-        .mobile-menu{
-            position:fixed;
-            top:80px;
-            right:-100%;
-            width:280px;
-            height:calc(100vh - 80px);
-            background:#121212;
-            z-index:999999;
-            transition:0.35s;
-            padding:25px;
-            border-left:2px solid #7b2cbf;
-        }
-
-        .mobile-menu.active{
-            right:0;
-        }
-
-        .mobile-menu a{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            color:white;
-            margin-bottom:20px;
-            font-size:18px;
-            font-weight:500;
-        }
-
-        .mobile-profile-link{
-            margin-top:25px;
-        }
-
-        /* HERO */
-
-        .hero{
-            height:88vh;
-            background:
-                linear-gradient(
-                    to right,
-                    rgba(0,0,0,0.95),
-                    rgba(0,0,0,0.55)
-                ),
-                url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop');
-
-            background-size:cover;
-            background-position:center;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            padding-left:70px;
-            padding-top:80px;
-        }
-
-        .hero h1{
-            font-size:78px;
-            font-weight:700;
-            margin-bottom:20px;
-        }
-
-        .hero p{
-            width:600px;
-            color:#dddddd;
-            line-height:1.8;
-            font-size:18px;
-            margin-bottom:30px;
-        }
-
-        .btn{
-            width:230px;
-            padding:16px;
-            border:none;
-            border-radius:12px;
-            background:#7b2cbf;
-            color:white;
-            font-size:18px;
-            font-weight:600;
-            cursor:pointer;
-            transition:0.3s;
-        }
-
-        .btn:hover{
-            background:#9d4edd;
-            transform:scale(1.05);
-        }
-
-        /* SECTION */
-
-        .section{
-            padding:40px 50px;
-        }
-
-        .section-title{
-            font-size:30px;
-            font-weight:600;
-            margin-bottom:10px;
-            color:#c77dff;
-        }
-
-        /* SLIDER */
-
-        .slider-container{
-            position:relative;
-        }
-
-        .movies-row{
-            display:flex;
-            gap:18px;
-            overflow-x:auto;
-            scrollbar-width:none;
-            padding:25px 10px;
-            scroll-behavior:smooth;
-        }
-
-        .movies-row::-webkit-scrollbar{
-            display:none;
-        }
-
-        /* CARD */
-
-        .card{
-            min-width:220px;
-            flex-shrink:0;
-            transition:0.35s;
-            cursor:pointer;
-            color:white;
-        }
-
-        .card:hover{
-            transform:scale(1.05);
-        }
-
-        .card img{
-            width:220px;
-            height:330px;
-            object-fit:cover;
-            border-radius:14px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-title{
-            margin-top:12px;
-            font-size:16px;
-            font-weight:500;
-            width:220px;
-            line-height:1.4;
-            color:white;
-        }
-
-        /* SETAS */
-
-        .arrow{
-            position:absolute;
-            top:45%;
-            transform:translateY(-50%);
-            width:55px;
-            height:55px;
-            border:none;
-            border-radius:50%;
-            background:rgba(0,0,0,0.85);
-            color:white;
-            font-size:30px;
-            cursor:pointer;
-            z-index:999;
-        }
-
-        .left{
-            left:-5px;
-        }
-
-        .right{
-            right:-5px;
-        }
-
-        /* MOBILE */
-
-        @@media(max-width:768px){
-
-            .navbar{
-                padding:0 20px;
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
-            .logo img{
-                width:150px;
+            html {
+                overflow-x: hidden;
             }
 
-            .desktop-search,
-            .desktop-profile{
-                display:none;
+            body {
+                background: #090909;
+                color: white;
+                font-family: 'Poppins',sans-serif;
+                overflow-x: hidden;
             }
 
-            .menu-toggle{
-                display:block;
+            a {
+                text-decoration: none;
             }
 
-            .mobile-search{
-                margin-bottom:25px;
+            /* NAVBAR */
+
+            .navbar {
+                width: 100%;
+                background: rgba(10,10,10,0.95);
+                backdrop-filter: blur(8px);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                min-height: 80px;
+                padding: 0 50px;
+                border-bottom: 2px solid #7b2cbf;
+                position: fixed;
+                top: 0;
+                z-index: 999999;
             }
 
-            .mobile-search-container.active .search-input{
-                width:180px;
-                opacity:1;
-                padding:0 18px;
-            }
-
-            .mobile-search-container .search-results{
-                width:230px;
-                right:0;
-            }
-
-            .hero{
-                height:auto;
-                min-height:75vh;
-                padding:130px 20px 60px;
-                text-align:center;
+            .nav-right{
+                display:flex;
                 align-items:center;
+                gap:15px;
             }
 
-            .hero h1{
-                font-size:42px;
+            .logo img {
+                width: 200px;
+                margin-top: 10px;
+                object-fit: contain;
             }
 
-            .hero p{
-                width:100%;
-                font-size:15px;
+            /* SEARCH */
+
+            .search-container {
+                position: relative;
+                display: flex;
+                align-items: center;
             }
 
-            .section{
-                padding:30px 15px;
+            .search-toggle {
+                width: 45px;
+                height: 45px;
+                border: none;
+                border-radius: 50%;
+                background: rgba(255,255,255,.08);
+                color: white;
+                cursor: pointer;
+                font-size: 18px;
+                transition: .3s;
             }
 
-            .card{
-                min-width:135px;
+                .search-toggle:hover {
+                    background: #7b2cbf;
+                    transform: scale(1.08);
+                }
+
+            .search-input {
+                width: 0;
+                opacity: 0;
+                height: 45px;
+                border: none;
+                outline: none;
+                background: rgba(255,255,255,.08);
+                color: white;
+                border-radius: 14px;
+                margin-left: 10px;
+                padding: 0;
+                transition: .4s;
+                font-size: 15px;
             }
 
-            .card img{
-                width:135px;
-                height:205px;
+            .search-container.active .search-input {
+                width: 260px;
+                opacity: 1;
+                padding: 0 18px;
             }
 
-            .card-title{
-                width:135px;
-                font-size:13px;
+            .search-results {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 320px;
+                max-height: 500px;
+                overflow-y: auto;
+                background: #141414;
+                border-radius: 18px;
+                display: none;
+                padding: 10px;
+                box-shadow: 0 20px 50px rgba(0,0,0,.7);
+                z-index: 99999;
             }
 
-            .arrow{
-                display:none;
+                .search-results.active {
+                    display: block;
+                }
+
+            .search-item {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 10px;
+                border-radius: 12px;
+                text-decoration: none;
+                transition: .25s;
             }
-        }
+
+                .search-item:hover {
+                    background: rgba(255,255,255,.08);
+                }
+
+                .search-item img {
+                    width: 55px;
+                    height: 80px;
+                    object-fit: cover;
+                    border-radius: 10px;
+                }
+
+                .search-item span {
+                    color: white;
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+
+            /* MOBILE */
+
+            @@media(max-width: 768px) {
+
+                .navbar {
+                    padding: 0 20px;
+                }
+            
+                .logo img {
+                    width: 150px;
+                }
+            
+                .profile-area {
+                    display: none;
+                }
+            
+                .search-container {
+                    display: none;
+                }
+            
+                .menu-toggle {
+                    display: block;
+                }
+            
+                .hero {
+                    height: auto;
+                    min-height: 75vh;
+                    padding: 130px 20px 60px;
+                    text-align: center;
+                    align-items: center;
+                }
+            
+                    .hero h1 {
+                        font-size: 42px;
+                        line-height: 1.1;
+                    }
+            
+                    .hero p {
+                        width: 100%;
+                        font-size: 15px;
+                        line-height: 1.7;
+                    }
+            
+                .btn {
+                    width: 100%;
+                    max-width: 280px;
+                    font-size: 16px;
+                }
+            
+                .section {
+                    padding: 30px 15px;
+                }
+            
+                .section-title {
+                    font-size: 24px;
+                }
+            
+                .movies-row {
+                    gap: 12px;
+                    padding: 20px 0;
+                }
+            
+                .card {
+                    min-width: 135px;
+                }
+            
+                    .card img {
+                        width: 135px;
+                        height: 205px;
+                    }
+            
+                .card-title {
+                    width: 135px;
+                    font-size: 13px;
+                    min-height: auto;
+                }
+            
+                .arrow {
+                    display: none;
+                }
+            
+                .mobile-search{
+                    margin-bottom:25px;
+                }
+            
+                .mobile-search input{
+                    width:100%;
+                    height:50px;
+                    border:none;
+                    outline:none;
+                    border-radius:14px;
+                    padding:0 16px;
+                    background:#1d1d1d;
+                    color:white;
+                    font-size:15px;
+                }
+            
+                .mobile-search-results{
+                    margin-top:15px;
+                    display:flex;
+                    flex-direction:column;
+                    gap:10px;
+                    max-height:350px;
+                    overflow-y:auto;
+                }
+            
+                .mobile-search-results .search-item{
+                    background:#1b1b1b;
+                }
+            }
+
+            /* MENU */
+
+            .menu-toggle {
+                display: none;
+                font-size: 32px;
+                cursor: pointer;
+                color: white;
+            }
+
+            .mobile-menu {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 250px;
+                height: calc(100vh - 80px);
+                background: #121212;
+                z-index: 999999;
+                transition: 0.35s;
+                padding: 25px;
+                border-left: 2px solid #7b2cbf;
+            }
+
+                .mobile-menu.active {
+                    right: 0;
+                }
+
+                .mobile-menu a {
+                    display: block;
+                    color: white;
+                    margin-bottom: 20px;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                    .mobile-menu a:hover {
+                        color: #c77dff;
+                    }
+
+
+
+            /* PERFIL */
+
+            .profile-area {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: white;
+                background: rgba(255,255,255,0.05);
+                padding: 8px 14px;
+                border-radius: 12px;
+                transition: 0.3s;
+            }
+
+                .profile-area:hover {
+                    background: rgba(255,255,255,0.1);
+                }
+
+            .profile-pic {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #c77dff;
+                background: #1a1a1a;
+            }
+
+            .profile-name {
+                font-size: 15px;
+                font-weight: 500;
+            }
+
+            
+
+            /* HERO */
+
+            .hero {
+                height: 88vh;
+                background: linear-gradient( to right, rgba(0,0,0,0.95), rgba(0,0,0,0.55) ), url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-left: 70px;
+                padding-top: 80px;
+            }
+
+                .hero h1 {
+                    font-size: 78px;
+                    font-weight: 700;
+                    margin-bottom: 20px;
+                    color: white;
+                }
+
+                .hero p {
+                    width: 600px;
+                    color: #dddddd;
+                    line-height: 1.8;
+                    font-size: 18px;
+                    margin-bottom: 30px;
+                }
+
+            .btn {
+                width: 230px;
+                padding: 16px;
+                border: none;
+                border-radius: 12px;
+                background: #7b2cbf;
+                color: white;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+                .btn:hover {
+                    background: #9d4edd;
+                    transform: scale(1.05);
+                }
+
+            /* SEÇÕES */
+
+            .section {
+                padding: 40px 50px;
+                position: relative;
+                overflow: visible;
+                z-index: 1;
+            }
+
+            .section-title {
+                font-size: 30px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #c77dff;
+            }
+
+            /* SLIDER */
+
+            .slider-container {
+                position: relative;
+                overflow: visible;
+            }
+
+            .movies-row {
+                display: flex;
+                gap: 18px;
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding: 25px 10px;
+                scroll-behavior: smooth;
+            }
+
+                .movies-row::-webkit-scrollbar {
+                    display: none;
+                }
+
+            /* CARDS */
+
+            .card {
+                min-width: 220px;
+                flex-shrink: 0;
+                position: relative;
+                transition: 0.35s;
+                cursor: pointer;
+                z-index: 1;
+                color: white;
+            }
+
+                .card:hover {
+                    transform: scale(1.05);
+                    z-index: 999999;
+                }
+
+                .card img {
+                    width: 220px;
+                    height: 330px;
+                    object-fit: cover;
+                    border-radius: 14px;
+                    border: 2px solid transparent;
+                    transition: 0.35s;
+                    display: block;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                }
+
+                .card:hover img {
+                    border-color: #9d4edd;
+                    box-shadow: 0 25px 60px rgba(0,0,0,0.95);
+                }
+
+            .card-title {
+                margin-top: 12px;
+                font-size: 16px;
+                font-weight: 500;
+                width: 220px;
+                line-height: 1.4;
+                min-height: 45px;
+                color: white;
+            }
+
+            /* SETAS */
+
+            .arrow {
+                position: absolute;
+                top: 45%;
+                transform: translateY(-50%);
+                width: 55px;
+                height: 55px;
+                border: none;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.85);
+                color: white;
+                font-size: 30px;
+                cursor: pointer;
+                z-index: 999999999;
+                transition: 0.3s;
+            }
+
+                .arrow:hover {
+                    background: #7b2cbf;
+                }
+
+            .left {
+                left: -5px;
+            }
+
+            .right {
+                right: -5px;
+            }
+
+            /* RESPONSIVO */
+
+            @@media(max-width: 768px) {
+
+                .navbar {
+                    padding: 0 20px;
+                }
+
+                .logo img {
+                    width: 150px;
+                }
+
+                .profile-area {
+                    display: none;
+                }
+
+                .menu-toggle {
+                    display: block;
+                }
+
+                .hero {
+                    height: auto;
+                    min-height: 75vh;
+                    padding: 130px 20px 60px;
+                    text-align: center;
+                    align-items: center;
+                }
+
+                    .hero h1 {
+                        font-size: 42px;
+                        line-height: 1.1;
+                    }
+
+                    .hero p {
+                        width: 100%;
+                        font-size: 15px;
+                        line-height: 1.7;
+                    }
+
+                .btn {
+                    width: 100%;
+                    max-width: 280px;
+                    font-size: 16px;
+                }
+
+                .section {
+                    padding: 30px 15px;
+                }
+
+                .section-title {
+                    font-size: 24px;
+                }
+
+                .movies-row {
+                    gap: 12px;
+                    padding: 20px 0;
+                }
+
+                .card {
+                    min-width: 135px;
+                }
+
+                    .card img {
+                        width: 135px;
+                        height: 205px;
+                    }
+
+                .card-title {
+                    width: 135px;
+                    font-size: 13px;
+                    min-height: auto;
+                }
+
+                .arrow {
+                    display: none;
+                }
+            }
+
+            
 
     </style>
 
@@ -490,107 +622,91 @@
 
     <!-- NAVBAR -->
 
-    <div class="navbar">
+<div class="navbar">
 
-        <div class="logo">
-            <img src="/images/logo.png" alt="Lumix Logo">
-        </div>
-
-        <div class="navbar-right">
-
-            <!-- SEARCH DESKTOP -->
-
-            <div class="search-container desktop-search">
-
-                <button id="searchToggle"
-                        class="search-toggle">
-
-                    🔍
-
-                </button>
-
-                <input type="text"
-                       id="searchInput"
-                       class="search-input"
-                       placeholder="Buscar filmes...">
-
-                <div id="searchResults"
-                     class="search-results">
-                </div>
-
-            </div>
-
-            <!-- PERFIL -->
-
-            <a href="/Profile/Index"
-               class="profile-area desktop-profile">
-
-                <img src="@fotoPerfil"
-                     class="profile-pic">
-
-                <div class="profile-name">
-                    @usuario
-                </div>
-
-            </a>
-
-            <!-- MENU -->
-
-            <div class="menu-toggle"
-                 onclick="toggleMenu()">
-
-                ☰
-
-            </div>
-
-        </div>
-
+    <div class="logo">
+        <img src="/images/logo.png" alt="Lumix Logo">
     </div>
 
-    <!-- MENU MOBILE -->
+    <!-- RIGHT AREA -->
 
-    <div class="mobile-menu"
-         id="mobileMenu">
+    <div class="nav-right">
 
-        <div class="mobile-search">
+        <!-- SEARCH -->
 
-            <div class="search-container mobile-search-container">
+        <div class="search-container">
 
-                <button id="mobileSearchToggle"
-                        class="search-toggle">
+            <button id="searchToggle"
+                    class="search-toggle">
 
-                    🔍
+                🔍
 
-                </button>
+            </button>
 
-                <input type="text"
-                       id="mobileSearchInput"
-                       class="search-input"
-                       placeholder="Buscar filmes...">
+            <input type="text"
+                   id="searchInput"
+                   class="search-input"
+                   placeholder="Buscar filmes...">
 
-                <div id="mobileSearchResults"
-                     class="search-results">
-                </div>
-
+            <div id="searchResults"
+                 class="search-results">
             </div>
 
         </div>
 
+        <!-- PROFILE -->
+
         <a href="/Profile/Index"
-           class="mobile-profile-link">
+           class="profile-area">
 
             <img src="@fotoPerfil"
                  class="profile-pic">
 
-            <span>@usuario</span>
+            <div class="profile-name">
+                @usuario
+            </div>
 
         </a>
 
-        <a href="/Auth/Logout">
-            🚪 Sair
-        </a>
+        <!-- MOBILE BUTTON -->
+
+        <div class="menu-toggle"
+             onclick="toggleMenu()">
+            ☰
+        </div>
 
     </div>
+
+</div>
+
+<!-- MENU MOBILE -->
+
+<div class="mobile-menu"
+     id="mobileMenu">
+
+    <!-- SEARCH MOBILE -->
+
+    <div class="mobile-search">
+
+        <input type="text"
+               id="mobileSearchInput"
+               placeholder="Buscar filmes...">
+
+        <div id="mobileSearchResults"
+             class="mobile-search-results">
+        </div>
+
+    </div>
+
+    <a href="/Profile/Index">
+        👤 Perfil
+    </a>
+
+    <a href="/Auth/Logout">
+        🚪 Sair
+    </a>
+
+</div>
 
     <!-- HERO -->
 
@@ -610,6 +726,535 @@
         </button>
 
     </div>
+
+    <!-- FAVORITOS -->
+    @if (favoritos != null && favoritos.Any())
+    {
+        <div class="section">
+
+            <div class="section-title">
+                Favoritos
+            </div>
+
+            <div class="slider-container">
+
+                <button class="arrow left"
+                        onclick="scrollLeftRow('favoritos')">
+                    ❮
+                </button>
+
+                <div class="movies-row"
+                     id="favoritos">
+
+                    @foreach (var filme in favoritos)
+                    {
+                        <a href="/Movie/Details/@filme.FilmeId"
+                               class="card">
+
+                            <img src="https://image.tmdb.org/t/p/w500@(filme.Poster)">
+
+                            <div class="card-title">
+                                @filme.Titulo
+                            </div>
+
+                        </a>
+                    }
+
+                </div>
+
+                <button class="arrow right"
+                        onclick="scrollRightRow('favoritos')">
+                    ❯
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+    <!-- POPULARES -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Populares
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('popular')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="popular">
+
+                @foreach (var filme in populares.EnumerateArray().Take(12))
+                {
+                    var titulo = filme.GetProperty("title").GetString();
+                    var poster = filme.GetProperty("poster_path").GetString();
+                    var id = filme.GetProperty("id").GetInt32();
+
+                    <a href="/Movie/Details/@id"
+                           class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('popular')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- AÇÃO -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Ação
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('acao')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="acao">
+
+                @foreach (var filme in acao.EnumerateArray().Take(12))
+                {
+                    var id = filme.GetProperty("id").GetInt32();
+
+                    var titulo =
+                    filme.GetProperty("title").GetString();
+
+                    var poster =
+                    filme.GetProperty("poster_path").GetString();
+
+                    <a href="/Movie/Details/@id"
+                           class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('acao')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ROMANCE -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Romance
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('romance')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="romance">
+
+                @foreach (var filme in romance.EnumerateArray().Take(12))
+                {
+                    var id = filme.GetProperty("id").GetInt32();
+
+                    var titulo =
+                    filme.GetProperty("title").GetString();
+
+                    var poster =
+                    filme.GetProperty("poster_path").GetString();
+
+                    <a href="/Movie/Details/@id"
+                           class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('romance')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- COMÉDIA -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Comédia
+        </div>
+
+        <div class="slider-container">
+
+            <button class="arrow left"
+                    onclick="scrollLeftRow('comedia')">
+                ❮
+            </button>
+
+            <div class="movies-row"
+                 id="comedia">
+
+                @foreach (var filme in comedia.EnumerateArray().Take(12))
+                {
+                    var id = filme.GetProperty("id").GetInt32();
+
+                    var titulo =
+                    filme.GetProperty("title").GetString();
+
+                    var poster =
+                    filme.GetProperty("poster_path").GetString();
+
+                    <a href="/Movie/Details/@id"
+                           class="card">
+
+                        <img src="https://image.tmdb.org/t/p/w500@(poster)">
+
+                        <div class="card-title">
+                            @titulo
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+            <button class="arrow right"
+                    onclick="scrollRightRow('comedia')">
+                ❯
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+
+            function scrollLeftRow(id) {
+
+                const row = document.getElementById(id);
+
+                row.scrollBy({
+                    left: -1000,
+                    behavior: 'smooth'
+                });
+            }
+
+            function scrollRightRow(id) {
+
+                const row = document.getElementById(id);
+
+                row.scrollBy({
+                    left: 1000,
+                    behavior: 'smooth'
+                });
+            }
+
+            function toggleMenu() {
+
+                document
+                    .getElementById("mobileMenu")
+                    .classList
+                    .toggle("active");
+            }
+
+    </script>
+
+    <script>
+
+            const searchToggle =
+                document.getElementById(
+                    "searchToggle"
+                );
+
+            const searchContainer =
+                document.querySelector(
+                    ".search-container"
+                );
+
+            const searchInput =
+                document.getElementById(
+                    "searchInput"
+                );
+
+            const searchResults =
+                document.getElementById(
+                    "searchResults"
+                );
+
+            let timer;
+
+            /* ABRIR SEARCH */
+
+            searchToggle.addEventListener(
+                "click",
+                () => {
+
+                    searchContainer.classList.toggle(
+                        "active"
+                    );
+
+                    if(
+                        searchContainer.classList.contains(
+                            "active"
+                        )
+                    ){
+                        searchInput.focus();
+                    }
+                }
+            );
+
+            /* BUSCA */
+
+            searchInput.addEventListener(
+                "input",
+                () => {
+
+                    clearTimeout(timer);
+
+                    timer = setTimeout(
+                        buscarFilmes,
+                        300
+                    );
+                }
+            );
+
+            async function buscarFilmes(){
+
+                const termo =
+                    searchInput.value.trim();
+
+                if(termo.length < 2){
+
+                    searchResults.innerHTML = "";
+
+                    searchResults.classList.remove(
+                        "active"
+                    );
+
+                    return;
+                }
+
+                const response =
+                    await fetch(
+                        `/Movie/Buscar?termo=${encodeURIComponent(termo)}`
+                    );
+
+                const data =
+                    await response.json();
+
+                searchResults.innerHTML = "";
+
+                if(
+                    !data.results ||
+                    data.results.length === 0
+                ){
+                    searchResults.innerHTML = `
+            
+                        <div style="
+                            padding:20px;
+                            text-align:center;
+                            color:#aaa;
+                        ">
+                            Nenhum filme encontrado
+                        </div>
+
+                    `;
+
+                    searchResults.classList.add(
+                        "active"
+                    );
+
+                    return;
+                }
+
+                data.results.slice(0,8).forEach(filme => {
+
+                    const poster =
+                        filme.poster_path
+                        ? `https://image.tmdb.org/t/p/w200${filme.poster_path}`
+                        : "/images/no-image.png";
+
+                    searchResults.innerHTML += `
+            
+                        <a href="/Movie/Details/${filme.id}"
+                           class="search-item">
+
+                            <img src="${poster}">
+
+                            <span>
+                                ${filme.title}
+                            </span>
+
+                        </a>
+
+                    `;
+                });
+
+                searchResults.classList.add(
+                    "active"
+                );
+            }
+
+            /* FECHAR AO CLICAR FORA */
+
+            document.addEventListener(
+                "click",
+                (e) => {
+
+                    if(
+                        !searchContainer.contains(
+                            e.target
+                        )
+                    ){
+
+                        searchResults.classList.remove(
+                            "active"
+                        );
+                    }
+                }
+            );
+
+    </script>
+
+    <script>
+
+            window.addEventListener("storage", function (event) {
+
+                if (event.key === "favoritosUpdated") {
+
+                    location.reload();
+                }
+
+            });
+
+    </script>
+
+    <script>
+
+    const mobileSearchInput =
+        document.getElementById(
+            "mobileSearchInput"
+        );
+
+    const mobileSearchResults =
+        document.getElementById(
+            "mobileSearchResults"
+        );
+
+    mobileSearchInput?.addEventListener(
+        "input",
+        async () => {
+
+            const termo =
+                mobileSearchInput.value.trim();
+
+            if(termo.length < 2){
+
+                mobileSearchResults.innerHTML = "";
+
+                return;
+            }
+
+            const response =
+                await fetch(
+                    `/Movie/Buscar?termo=${encodeURIComponent(termo)}`
+                );
+
+            const data =
+                await response.json();
+
+            mobileSearchResults.innerHTML = "";
+
+            if(
+                !data.results ||
+                data.results.length === 0
+            ){
+                mobileSearchResults.innerHTML = `
+        
+                    <div style="
+                        color:#aaa;
+                        text-align:center;
+                        padding:15px;
+                    ">
+                        Nenhum filme encontrado
+                    </div>
+
+                `;
+
+                return;
+            }
+
+            data.results.slice(0,8).forEach(filme => {
+
+                const poster =
+                    filme.poster_path
+                    ? `https://image.tmdb.org/t/p/w200${filme.poster_path}`
+                    : "/images/no-image.png";
+
+                mobileSearchResults.innerHTML += `
+        
+                    <a href="/Movie/Details/${filme.id}"
+                       class="search-item">
+
+                        <img src="${poster}">
+
+                        <span>
+                            ${filme.title}
+                        </span>
+
+                    </a>
+
+                `;
+            });
+        }
+    );
+
+</script>
 
 </body>
 
