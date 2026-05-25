@@ -20,6 +20,116 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
 
+    <style>
+            /* BOTÃO ESQUECI SENHA */
+            .forgot-btn {
+                background: none;
+                border: none;
+                color: #b983ff;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                transition: .3s;
+                font-family: 'Poppins', sans-serif;
+            }
+
+                .forgot-btn:hover {
+                    color: #d0a7ff;
+                }
+
+            /* MODAL */
+            .forgot-modal {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.75);
+                backdrop-filter: blur(6px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: .3s;
+                z-index: 999999;
+            }
+
+                .forgot-modal.active {
+                    opacity: 1;
+                    pointer-events: all;
+                }
+
+            .forgot-box {
+                width: 100%;
+                max-width: 430px;
+                background: #121212;
+                border: 1px solid rgba(255,255,255,.08);
+                border-radius: 24px;
+                padding: 35px;
+                position: relative;
+                animation: modalShow .3s ease; /* A animação é chamada aqui, mas roda a partir do login.css */
+            }
+
+            .close-modal {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 50%;
+                background: rgba(255,255,255,.08);
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: .3s;
+            }
+
+                .close-modal:hover {
+                    background: rgba(255,255,255,.15);
+                }
+
+            .forgot-box h2 {
+                color: white;
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+
+            .forgot-box p {
+                color: #bdbdbd;
+                line-height: 1.6;
+                margin-bottom: 25px;
+            }
+
+            .forgot-box input {
+                width: 100%;
+                height: 55px;
+                border: none;
+                outline: none;
+                border-radius: 14px;
+                background: rgba(255,255,255,.06);
+                color: white;
+                padding: 0 18px;
+                font-size: 15px;
+                margin-bottom: 18px;
+            }
+
+            .forgot-submit {
+                width: 100%;
+                height: 55px;
+                border: none;
+                border-radius: 14px;
+                background: #7b2cbf;
+                color: white;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: .3s;
+            }
+
+                .forgot-submit:hover {
+                    background: #9d4edd;
+                }
+    </style>
+
 </head>
 
 <body>
@@ -29,8 +139,6 @@
     <div class="background-overlay"></div>
 
     <div class="page">
-
-        <!-- LADO ESQUERDO -->
 
         <div class="welcome-side">
 
@@ -77,8 +185,6 @@
 
         </div>
 
-        <!-- LOGIN -->
-
         <div class="login-side">
 
             <div class="login-box">
@@ -95,7 +201,8 @@
 
                 </div>
 
-                <form method="post">
+                <form method="post"
+                      action="/Auth/Login">
 
                     <div class="input-group">
 
@@ -135,10 +242,13 @@
 
                         </label>
 
-                        <a href="#"
-                           class="forgot">
+                        <button type="button"
+                                class="forgot-btn"
+                                onclick="abrirModalEsqueci()">
+
                             Esqueci minha senha
-                        </a>
+
+                        </button>
 
                     </div>
 
@@ -182,6 +292,117 @@
         </div>
 
     </div>
+
+    <div class="forgot-modal"
+         id="forgotModal">
+
+        <div class="forgot-box">
+
+            <button type="button"
+                    class="close-modal"
+                    onclick="fecharModalEsqueci()">
+
+                ✕
+
+            </button>
+
+            <h2>
+                Recuperar senha
+            </h2>
+
+            <p>
+                Digite seu email e a nova senha.
+            </p>
+
+            <div class="input-group">
+
+                <input type="email"
+                       id="emailRecuperacao"
+                       placeholder="Seu email"
+                       required>
+
+            </div>
+
+            <div class="input-group">
+
+                <input type="password"
+                       id="novaSenha"
+                       placeholder="Nova senha"
+                       required>
+
+            </div>
+
+            <div class="input-group">
+
+                <input type="password"
+                       id="confirmarSenha"
+                       placeholder="Confirmar senha"
+                       required>
+
+            </div>
+
+            <button type="button"
+                    class="btn-save-password"
+                    onclick="#">
+
+                Salvar nova senha
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+            function abrirModalEsqueci() {
+                document
+                    .getElementById("forgotModal")
+                    .classList
+                    .add("active");
+            }
+
+            function fecharModalEsqueci() {
+                document
+                    .getElementById("forgotModal")
+                    .classList
+                    .remove("active");
+            }
+
+            async function alterarSenha() {
+                const email = document.getElementById("emailRecuperacao").value;
+                const novaSenha = document.getElementById("novaSenha").value;
+                const confirmarSenha = document.getElementById("confirmarSenha").value;
+
+                if (!email || !novaSenha || !confirmarSenha) {
+                    alert("Preencha todos os campos");
+                    return;
+                }
+
+                if (novaSenha !== confirmarSenha) {
+                    alert("As senhas não coincidem");
+                    return;
+                }
+
+                const response = await fetch("/Auth/ForgotPassword", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        novaSenha: novaSenha,
+                        confirmarSenha: confirmarSenha
+                    })
+                });
+
+                const resultado = await response.text();
+                alert(resultado);
+
+                if (resultado.includes("sucesso")) {
+                    fecharModalEsqueci();
+                }
+            }
+    </script>
 
 </body>
 

@@ -21,7 +21,7 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Lax;
 
     options.Cookie.SecurePolicy =
-        CookieSecurePolicy.Always;
+    CookieSecurePolicy.SameAsRequest;
 
     options.Cookie.MaxAge = null;
 });
