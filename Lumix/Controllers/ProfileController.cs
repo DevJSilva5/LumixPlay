@@ -7,16 +7,25 @@ public class ProfileController : Controller
 {
     private readonly AppDbContext _context;
 
-    public ProfileController(AppDbContext context)
+    private readonly IWebHostEnvironment _env;
+
+    public ProfileController(
+        AppDbContext context,
+        IWebHostEnvironment env
+    )
     {
         _context = context;
+
+        _env = env;
     }
 
     public IActionResult Index()
     {
-        var email = HttpContext.Session.GetString("Email");
+        var email =
+            HttpContext.Session.GetString("Email");
 
-        var usuario = _context.Usuarios
+        var usuario =
+            _context.Usuarios
             .FirstOrDefault(x => x.Email == email);
 
         return View(usuario);
@@ -24,9 +33,9 @@ public class ProfileController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Editar(
-    string nome,
-    IFormFile foto
-)
+        string nome,
+        IFormFile foto
+    )
     {
         var email =
             HttpContext.Session.GetString("Email");
@@ -51,12 +60,15 @@ public class ProfileController : Controller
                     Guid.NewGuid().ToString()
                     + extensao;
 
+                /* USA WWWROOT CORRETAMENTE */
+
                 var pastaUploads =
                     Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot",
+                        _env.WebRootPath,
                         "uploads"
                     );
+
+                /* CRIA PASTA */
 
                 if (!Directory.Exists(pastaUploads))
                 {
@@ -71,20 +83,18 @@ public class ProfileController : Controller
                         nomeArquivo
                     );
 
-                using (var stream =
-                    new FileStream(
-                        caminhoArquivo,
-                        FileMode.Create,
-                        FileAccess.Write,
-                        FileShare.None,
-                        4096,
-                        true
-                    ))
+                using (
+                    var stream =
+                        new FileStream(
+                            caminhoArquivo,
+                            FileMode.Create
+                        )
+                )
                 {
                     await foto.CopyToAsync(stream);
-
-                    await stream.FlushAsync();
                 }
+
+                /* SALVA CAMINHO */
 
                 usuario.FotoPerfil =
                     "/uploads/" + nomeArquivo;
@@ -101,7 +111,11 @@ public class ProfileController : Controller
 
             HttpContext.Session.SetString(
                 "FotoPerfil",
-                usuario.FotoPerfil
+                string.IsNullOrEmpty(
+                    usuario.FotoPerfil
+                )
+                ? "/images/perfil-default.png"
+                : usuario.FotoPerfil
             );
         }
 

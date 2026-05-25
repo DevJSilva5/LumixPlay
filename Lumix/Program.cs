@@ -66,6 +66,7 @@ app.Use(async (context, next) =>
         path.StartsWith("/css") ||
         path.StartsWith("/js") ||
         path.StartsWith("/images") ||
+        path.StartsWith("/uploads") ||
         path.StartsWith("/lib");
 
     var usuario =
