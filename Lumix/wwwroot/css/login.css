@@ -320,7 +320,7 @@ html, body {
             text-decoration: underline;
         }
 
-/* ANIMAÇÕES (CSS Puro - Apenas uma '@') */
+/* ANIMAÇÕES */
 @keyframes fadeLeft {
     from {
         opacity: 0;
