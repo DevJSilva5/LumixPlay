@@ -4,6 +4,15 @@ Sistema completo de streaming desenvolvido em **ASP.NET Core** com autenticaçã
 
 ---
 
+## 🔗 Demonstração em Produção
+
+O projeto está publicado e pode ser acessado em tempo real através do link abaixo:
+
+🚀 **[Acessar o Lumix Play no Railway](https://lumixplay-production.up.railway.app/)**
+
+---
+
+
 ## 📖 Descrição do Projeto
 
 O **Lumix Play** é uma plataforma de streaming inspirada nos serviços modernos mais populares do mercado. O ecossistema foi projetado dividindo-se entre uma aplicação web tradicional utilizando Razor Views e uma API REST estruturada para o gerenciamento de recursos.
@@ -182,7 +191,3 @@ Projeto desenvolvido com foco acadêmico para consolidação de conhecimentos pr
 ## 📄 Licença
 
 Este projeto foi desenvolvido estritamente para fins educacionais e de portfólio, estando livre para clonagem, estudos e modificações.
-
-```
-
-```
